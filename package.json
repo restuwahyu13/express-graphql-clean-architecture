@@ -1,5 +1,5 @@
 {
-  "name": "express-graphql-v1",
+  "name": "express-type-graphql",
   "version": "0.0.1",
   "description": "Express graphql boilerplate using type-graphql and apollo server",
   "main": "app.js",
