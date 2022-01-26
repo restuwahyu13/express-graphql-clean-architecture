@@ -48,17 +48,18 @@
     "express-slow-down": "^1.4.0",
     "graphql": "^15.8.0",
     "graphql-middleware": "^6.1.12",
+    "graphql-scalars": "^1.14.1",
     "graphql-upload": "^13.0.0",
     "helmet": "^5.0.2",
     "hpp": "^0.2.3",
     "http-status": "^1.5.0",
+    "is-any-type": "^0.0.4",
     "knex": "^1.0.1",
     "morgan": "^1.10.0",
     "objection": "^3.0.1",
     "pg": "^8.7.1",
     "reusify": "^1.0.4",
-    "type-graphql": "^1.1.1",
-    "typedi": "^0.10.0"
+    "type-graphql": "^1.1.1"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",

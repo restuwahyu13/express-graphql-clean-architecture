@@ -20,7 +20,6 @@ import zlib from 'zlib'
 import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
 import path from 'path'
-import { Container } from 'typedi'
 
 import * as knexfile from '@/knexfile'
 
@@ -86,7 +85,7 @@ class App {
     const resolversPath: NonEmptyArray<string> = [path.join(__dirname, 'resolvers/**/*.ts')]
     return new ApolloServer({
       introspection: false,
-      schema: applyMiddleware(await buildSchema({ resolvers: resolversPath, skipCheck: false, container: Container })),
+      schema: applyMiddleware(await buildSchema({ resolvers: resolversPath, skipCheck: false })),
       formatError: ({ name, message, path }) => ({
         name,
         message: message.replace('Unexpected error value: ', ''),

@@ -1,19 +1,25 @@
 import { Query, Resolver } from 'type-graphql'
 import status from 'http-status'
 
-import { GraphqlResponse, IGraphqlResponse } from '@helpers/helper.gqlResponse'
+import { DAOControllerStudent } from '@dao/dao.student'
+import { GraphqlResponse } from '@typedefs/type.student'
 
 @Resolver()
-export class ResolverStudent {
+export class ResolverStudent implements DAOControllerStudent {
   /**
    * @description QUERY RESOLVER TERITORY
    */
+
   @Query((returns) => GraphqlResponse)
-  student(): IGraphqlResponse {
-    const gqlResponse: IGraphqlResponse = {
+  async student(): Promise<GraphqlResponse> {
+    const gqlResponse: GraphqlResponse = {
       stat_code: status.OK,
       stat_msg: 'Hello Wordl Student'
     }
     return gqlResponse
   }
+
+  /**
+   * @description MUTATION RESOLVER TERITORY
+   */
 }

@@ -1,23 +1,24 @@
-import { Field, ObjectType } from 'type-graphql'
+import { assert } from 'is-any-type'
 
 export interface IGraphqlResponse {
   stat_code: number
   stat_msg: string
-  // data?: Record<string, any> | Array<Record<string, any>>
-  // pagination?: Record<string, any>
+  data?: any
+  pagination?: Record<string, any>
 }
 
-@ObjectType()
-export class GraphqlResponse implements IGraphqlResponse {
-  @Field()
-  stat_code: number
-
-  @Field()
-  stat_msg: string
-
-  // @Field({ nullable: true })
-  // data?: Record<string, any> | Array<Record<string, any>>
-
-  // @Field({ nullable: true })
-  // pagination?: Record<string, any>
+export const gqlResponse = (code: number, message: string, data?: any, pagination?: Record<string, any>): IGraphqlResponse => {
+  if (assert.isNull(data as any)) {
+    return {
+      stat_code: code,
+      stat_msg: message
+    }
+  } else {
+    return {
+      stat_code: code,
+      stat_msg: message,
+      data: data,
+      pagination: pagination
+    }
+  }
 }

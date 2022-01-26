@@ -10,6 +10,7 @@
       "@/*": ["*"],
       "@configs/*": ["configs/*"],
       "@resolvers/*": ["resolvers/*"],
+      "@typedefs/*": ["typedefs/*"],
       "@dto/*": ["dto/*"],
       "@dao/*": ["dao/*"],
       "@helpers/*": ["helpers/*"],
