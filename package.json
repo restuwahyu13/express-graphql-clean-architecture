@@ -1,0 +1,95 @@
+{
+  "name": "express-graphql-v1",
+  "version": "0.0.1",
+  "description": "Express graphql staterkit using type-graphql and apollo server",
+  "main": "app.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "cleanup": "rimraf dist",
+    "build": "npm run cleanup && tsc && tsc-alias",
+    "start": "node dist/app.js",
+    "dev": "tsnd --poll --respawn --watch src/**/*.{ts} -r tsconfig-paths/register src/app.ts",
+    "kmig": "npx knex --cwd src --knexfile knexfile.ts migrate:latest",
+    "kroll": "npx knex --cwd src --knexfile knexfile.ts migrate:rollback",
+    "klist": "npx knex --cwd src --knexfile knexfile.ts migrate:list",
+    "krun": "npx knex --cwd src --knexfile knexfile.ts seed:run"
+  },
+  "author": {
+    "name": "restu wahyu saputra",
+    "email": "restuwahyu13@gmail.com",
+    "url": "https://github.com/restuwahyu13"
+  },
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
+  "maintainers": [
+    "Restu Wahyu Saputra"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/restuwahyu13/express-graphql-starterkit"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@graphql-tools/schema": "^8.3.1",
+    "apollo-server-express": "^3.5.0",
+    "body-parser-graphql": "^1.1.0",
+    "class-validator": "^0.13.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "express-async-errors": "^3.1.1",
+    "express-http-error": "^0.5.0",
+    "express-rate-limit": "^6.2.0",
+    "express-slow-down": "^1.4.0",
+    "graphql": "^15.8.0",
+    "graphql-middleware": "^6.1.12",
+    "graphql-upload": "^13.0.0",
+    "helmet": "^5.0.2",
+    "hpp": "^0.2.3",
+    "http-status": "^1.5.0",
+    "knex": "^1.0.1",
+    "morgan": "^1.10.0",
+    "objection": "^3.0.1",
+    "pg": "^8.7.1",
+    "reusify": "^1.0.4",
+    "type-graphql": "^1.1.1",
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
+    "@types/eslint": "^8.4.1",
+    "@types/express": "^4.17.13",
+    "@types/express-rate-limit": "^6.0.0",
+    "@types/express-slow-down": "^1.3.2",
+    "@types/graphql": "^14.5.0",
+    "@types/graphql-upload": "^8.0.10",
+    "@types/helmet": "^4.0.0",
+    "@types/hpp": "^0.2.2",
+    "@types/http-status": "^1.1.2",
+    "@types/knex": "^0.16.1",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.12",
+    "@types/pg": "^8.6.4",
+    "@types/prettier": "^2.4.3",
+    "@types/reflect-metadata": "^0.1.0",
+    "@types/rimraf": "^3.0.2",
+    "eslint": "^8.7.0",
+    "graphql-config": "^4.1.0",
+    "graphql-playground-middleware-express": "^1.7.23",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "tsc-alias": "^1.5.0",
+    "tsconfig-paths": "^3.12.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5"
+  }
+}
