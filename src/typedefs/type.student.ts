@@ -29,7 +29,7 @@ class Student {
 }
 
 @ObjectType()
-class Pagination {
+class PaginationStudent {
   @Field((type) => ID)
   limit: number
 
@@ -38,7 +38,7 @@ class Pagination {
 }
 
 @ObjectType()
-export class GraphqlResponse {
+export class ResponseStudent {
   @Field((type) => Int)
   stat_code: number
 
@@ -49,5 +49,5 @@ export class GraphqlResponse {
   data?: Student
 
   @Field({ nullable: true })
-  pagination?: Pagination
+  pagination?: PaginationStudent
 }
