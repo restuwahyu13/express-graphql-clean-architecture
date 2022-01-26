@@ -1,11 +1,11 @@
 import { Query, Resolver } from 'type-graphql'
 import status from 'http-status'
 
-import { DAOControllerStudent } from '@dao/dao.student'
+import { ServiceStudent } from '@services/service.student'
 import { ResponseStudent } from '@typedefs/type.student'
 
 @Resolver()
-export class ResolverStudent implements DAOControllerStudent {
+export class ResolverStudent extends ServiceStudent {
   /**
    * @description QUERY RESOLVER TERITORY
    */

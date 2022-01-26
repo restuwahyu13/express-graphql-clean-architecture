@@ -2,10 +2,10 @@ import status from 'http-status'
 
 import { ModelStudent } from '@models/model.student'
 import { DTOStudentCreate, DTOStudentById, DTOStudentUpdate } from '@dto/dto.student'
-import { DAOServiceStudent } from '@dao/dao.student'
+import { DAOStudent } from '@dao/dao.student'
 import { gqlResponse } from '@helpers/helper.gqlResponse'
 
-export class ServiceStudent implements DAOServiceStudent {
+export class ServiceStudent implements DAOStudent {
   constructor(private model: ModelStudent) {}
 
   async createStudentService(payload: DTOStudentCreate): Promise<any> {
