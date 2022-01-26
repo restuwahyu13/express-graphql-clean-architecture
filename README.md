@@ -1,1 +1,1 @@
-# Express Graphql Starterkit (Maintance)
+# Express Graphql Boilerplate (Maintance)
