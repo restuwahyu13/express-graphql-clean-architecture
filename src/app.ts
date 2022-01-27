@@ -54,7 +54,7 @@ class App {
     this.app.use(graphqlBodyParser())
     this.app.use(hpp())
     this.app.use(helmet({ contentSecurityPolicy: false }))
-    this.app.use(graphqlUpload({ maxFileSize: 3000000 }))
+    this.app.use(graphqlUpload({ maxFileSize: 5000000 }))
     this.app.use(
       cors({
         methods: ['GET', 'POST', 'PUT', 'PATCH'],
@@ -72,7 +72,7 @@ class App {
     this.app.use(
       rateLimit({
         windowMs: 24 * 60 * 3, // next request to endpoint
-        max: 100, // maximal request for all endpoint
+        max: 1000, // maximal request for all endpoint
         message: 'To many request, send back request after 3 minutes'
       })
     )
@@ -125,7 +125,7 @@ class App {
     if (!this.nodeEnv) {
       gracefulShutdown(this.server.listen(process.env.PORT), {
         development: false,
-        forceExit: false,
+        forceExit: true,
         timeout: 60000
       })
     } else {
