@@ -27,14 +27,15 @@ export class Auth implements MiddlewareInterface {
       const isJsonWebToken: string[] = (accessToken as string).split('.')
       if (isJsonWebToken?.length !== 3) throw gqlResponse(status.UNAUTHORIZED, 'JWT token is not valid')
 
-      const decodedToken: Record<string, any> | string | JwtPayload = await JsonWebToken.verify(accessToken)
-      if (!assert.isPromise(decodedToken as any)) throw gqlResponse(status.UNAUTHORIZED, 'Access token expired')
+      const decodedToken: Record<string, any> | string | JwtPayload = JsonWebToken.verify(accessToken)
+      if (assert.isPromise(decodedToken as any)) throw gqlResponse(status.UNAUTHORIZED, 'Access token expired')
 
       // set global request data
       const getUser: ModelUser = await ModelUser.query().findById(decodedToken['id']).andWhere('role', decodedToken['role']).first()
       Object.assign(IncomingRequest.req, { user: getUser })
 
-      next()
+      // goto to next step
+      await next()
     } catch (e: any) {
       throw graphqlError(e.start_code || status.UNAUTHORIZED, e.stat_msg || e.message)
     }

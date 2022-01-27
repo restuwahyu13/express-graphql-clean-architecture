@@ -42,7 +42,7 @@ export class JsonWebToken {
       const decodedToken: string | jwt.JwtPayload = jwt.verify(accessToken, secretKey, { audience: 'graphql' })
       return decodedToken
     } catch (e: any) {
-      return Promise.reject(new GraphqlError('Verified accessToken expired'))
+      return Promise.reject(new GraphqlError('Verified accessToken expired or invalid'))
     }
   }
 }

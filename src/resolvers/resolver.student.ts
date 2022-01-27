@@ -1,4 +1,5 @@
-import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ExpressContext } from 'apollo-server-express'
 
 import { ServiceStudent } from '@services/service.student'
 import { DTOStudent } from '@dto/dto.student'
@@ -14,7 +15,7 @@ export class ResolverStudent extends ServiceStudent {
 
   @Query((returns) => GraphqlResponse)
   @UseMiddleware(Auth)
-  async resultsStudentResolver(): Promise<GraphqlResponse> {
+  async resultsStudentResolver(@Ctx() context: ExpressContext): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.resultsStudentService()
       return gqlResponse(res.stat_code, res.stat_msg, { results: res.data }, res.pagination)
@@ -24,7 +25,8 @@ export class ResolverStudent extends ServiceStudent {
   }
 
   @Query((returns) => GraphqlResponse)
-  async resultStudentResolver(@Arg('id') params: number): Promise<GraphqlResponse> {
+  @UseMiddleware(Auth)
+  async resultStudentResolver(@Arg('id') params: number, @Ctx() context: ExpressContext): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.resultStudentService(params)
       return gqlResponse(res.stat_code, res.stat_msg, { result: res.data }, res.pagination)
@@ -38,7 +40,8 @@ export class ResolverStudent extends ServiceStudent {
    */
 
   @Mutation((returns) => GraphqlResponse)
-  async createStudentResolver(@Arg('input') payload: DTOStudent): Promise<GraphqlResponse> {
+  @UseMiddleware(Auth)
+  async createStudentResolver(@Arg('input') payload: DTOStudent, @Ctx() context: ExpressContext): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.createStudentService(payload)
       return gqlResponse(res.stat_code, res.stat_msg)
@@ -48,7 +51,8 @@ export class ResolverStudent extends ServiceStudent {
   }
 
   @Mutation((returns) => GraphqlResponse)
-  async deleteStudentResolver(@Arg('id') params: number): Promise<GraphqlResponse> {
+  @UseMiddleware(Auth)
+  async deleteStudentResolver(@Arg('id') params: number, @Ctx() context: ExpressContext): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.deleteStudentService(params)
       return gqlResponse(res.stat_code, res.stat_msg)
@@ -58,7 +62,12 @@ export class ResolverStudent extends ServiceStudent {
   }
 
   @Mutation((returns) => GraphqlResponse)
-  async updateStudentResolver(@Arg('id') params: number, @Arg('input') payload: DTOStudent): Promise<GraphqlResponse> {
+  @UseMiddleware(Auth)
+  async updateStudentResolver(
+    @Arg('id') params: number,
+    @Arg('input') payload: DTOStudent,
+    @Ctx() context: ExpressContext
+  ): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.updateStudentService(params, payload)
       return gqlResponse(res.stat_code, res.stat_msg)
