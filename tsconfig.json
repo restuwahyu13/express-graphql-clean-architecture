@@ -29,7 +29,6 @@
     "allowUmdGlobalAccess": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "declaration": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "pretty": true,

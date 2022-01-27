@@ -31,6 +31,8 @@ class App {
   private app: Express
   private server: Server
   private knex: KnexDB
+  private resolvers: NonEmptyArray<string>
+  private nodeEnv: boolean = process.env.NODE_ENV !== 'production' ? true : false
 
   constructor() {
     this.app = reusify(express).get() as Express
@@ -45,6 +47,7 @@ class App {
 
   private async config(): Promise<void> {
     this.app.disabled('x-powered-by')
+    this.resolvers = this.nodeEnv ? [path.join(__dirname, 'resolvers/**/*.ts')] : [path.join(__dirname, 'resolvers/**/*.js')]
   }
 
   private async middleware(): Promise<void> {
@@ -83,10 +86,9 @@ class App {
   }
 
   private async apolloServer(): Promise<ApolloServer<ExpressContext>> {
-    const resolversPath: NonEmptyArray<string> = [path.join(__dirname, 'resolvers/**/*.ts')]
     return new ApolloServer({
-      schema: applyMiddleware(await buildSchema({ resolvers: resolversPath, skipCheck: false })),
-      debug: process.env.NODE_ENV !== 'production' ? true : false,
+      schema: applyMiddleware(await buildSchema({ resolvers: this.resolvers, skipCheck: false })),
+      debug: this.nodeEnv ? true : false,
       introspection: true,
       stopOnTerminationSignals: true,
       parseOptions: {
@@ -95,12 +97,12 @@ class App {
         experimentalFragmentVariables: true
       },
       formatResponse(response: GraphQLResponse, requestContext?: GraphQLRequestContext): any {
-        if (process.env.NODE_ENV !== 'production' && !response.errors) {
+        if (this.nodeEnv && !response.errors) {
           Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
         }
       },
       formatError: (error: GraphQLError): any => {
-        if (process.env.NODE_ENV !== 'production' && isApolloErrorInstance(error.originalError)) {
+        if (this.nodeEnv && isApolloErrorInstance(error.originalError)) {
           Winston.loggerError(error.name, error.originalError['data'])
         }
         return formatApolloError({
@@ -120,7 +122,7 @@ class App {
     await apollo.start()
     apollo.applyMiddleware({ app: this.app })
 
-    if (process.env.NODE_ENV !== 'development') {
+    if (!this.nodeEnv) {
       gracefulShutdown(this.server.listen(process.env.PORT), {
         development: false,
         forceExit: false,
