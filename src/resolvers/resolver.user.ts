@@ -25,7 +25,7 @@ export class ResolverUser extends ServiceUser {
   async loginUserResolver(@Arg('input') payload: DTOUserLogin): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.loginUserService(payload)
-      return gqlResponse(res.stat_code, res.stat_msg)
+      return gqlResponse(res.stat_code, res.stat_msg, res.data, {})
     } catch (e: any) {
       return graphqlError(e.stat_code, e.stat_msg || e.message)
     }

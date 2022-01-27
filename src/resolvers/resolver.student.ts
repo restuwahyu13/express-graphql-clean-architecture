@@ -1,9 +1,10 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 
 import { ServiceStudent } from '@services/service.student'
 import { DTOStudent } from '@dto/dto.student'
 import { GraphqlResponse, gqlResponse } from '@helpers/helper.gqlResponse'
 import { graphqlError } from '@helpers/helper.gqlError'
+import { Auth } from '@middlewares/middleware.auth'
 
 @Resolver()
 export class ResolverStudent extends ServiceStudent {
@@ -12,6 +13,7 @@ export class ResolverStudent extends ServiceStudent {
    */
 
   @Query((returns) => GraphqlResponse)
+  @UseMiddleware(Auth)
   async resultsStudentResolver(): Promise<GraphqlResponse> {
     try {
       const res: GraphqlResponse = await super.resultsStudentService()

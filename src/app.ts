@@ -4,7 +4,7 @@ import 'express-http-error'
 import { GraphQLError } from 'graphql'
 import { NonEmptyArray, buildSchema } from 'type-graphql'
 import { ApolloServer, ExpressContext } from 'apollo-server-express'
-import { GraphQLRequestContext, GraphQLResponse } from 'apollo-server-core'
+import { Context, GraphQLRequestContext, GraphQLResponse, Config } from 'apollo-server-core'
 import { graphqlUploadExpress as graphqlUpload } from 'graphql-upload'
 import { bodyParserGraphQL as graphqlBodyParser } from 'body-parser-graphql'
 import { applyMiddleware } from 'graphql-middleware'
@@ -109,7 +109,8 @@ class App {
           // path: error.path,
           // locations: error.locations,
         })
-      }
+      },
+      context: (req: Context): Config<Request> => req
     })
   }
 
