@@ -3,10 +3,10 @@ import status from 'http-status'
 import { ModelTeacher } from '@models/model.teacher'
 import { DTOTeacher } from '@dto/dto.teacher'
 import { DAOTeacher } from '@dao/dao.teacher'
-import { gqlResponse } from '@helpers/helper.gqlResponse'
+import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
-  async createTeacherService(payload: DTOTeacher): Promise<any> {
+  async createTeacherService(payload: DTOTeacher): Promise<GraphqlResponse> {
     try {
       const checkDosenName: ModelTeacher = await super
         .model()
@@ -24,7 +24,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     }
   }
 
-  async resultsTeacherService(): Promise<any> {
+  async resultsTeacherService(): Promise<GraphqlResponse> {
     try {
       const getAllTeachers: ModelTeacher[] = await super.model().select()
 
@@ -34,7 +34,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     }
   }
 
-  async resultTeacherService(params: number): Promise<any> {
+  async resultTeacherService(params: number): Promise<GraphqlResponse> {
     try {
       const getTeacher: ModelTeacher = await super.model().where('id', params).first()
       if (!getTeacher) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
@@ -45,7 +45,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     }
   }
 
-  async deleteTeacherService(params: number): Promise<any> {
+  async deleteTeacherService(params: number): Promise<GraphqlResponse> {
     try {
       const checkTeacherId: ModelTeacher = await super.model().where('npm', params).first()
       if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
@@ -59,7 +59,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     }
   }
 
-  async updateTeacherService(params: number, payload: DTOTeacher): Promise<any> {
+  async updateTeacherService(params: number, payload: DTOTeacher): Promise<GraphqlResponse> {
     try {
       const checkTeacherId: ModelTeacher = await super.model().where('id', params).first()
       if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)

@@ -3,10 +3,10 @@ import status from 'http-status'
 import { ModelStudent } from '@models/model.student'
 import { DTOStudent } from '@dto/dto.student'
 import { DAOStudent } from '@dao/dao.student'
-import { gqlResponse } from '@helpers/helper.gqlResponse'
+import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceStudent extends ModelStudent implements DAOStudent {
-  async createStudentService(payload: DTOStudent): Promise<any> {
+  async createStudentService(payload: DTOStudent): Promise<GraphqlResponse> {
     try {
       const checStudentNpm: ModelStudent = await super.model().where('npm', payload.npm).orWhere('name', payload.name).first()
       if (checStudentNpm) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
@@ -20,7 +20,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async resultsStudentService(): Promise<any> {
+  async resultsStudentService(): Promise<GraphqlResponse> {
     try {
       const getAllStudents: ModelStudent[] = await super.model().select()
 
@@ -30,7 +30,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async resultStudentService(params: number): Promise<any> {
+  async resultStudentService(params: number): Promise<GraphqlResponse> {
     try {
       const getStudent: ModelStudent = await super.model().where('id', params).first()
       if (!getStudent) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
@@ -41,7 +41,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async deleteStudentService(params: number): Promise<any> {
+  async deleteStudentService(params: number): Promise<GraphqlResponse> {
     try {
       const checkStudentId: ModelStudent = await super.model().where('npm', params).first()
       if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
@@ -55,7 +55,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async updateStudentService(params: number, payload: DTOStudent): Promise<any> {
+  async updateStudentService(params: number, payload: DTOStudent): Promise<GraphqlResponse> {
     try {
       const checkStudentId: ModelStudent = await super.model().where('id', params).first()
       if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
