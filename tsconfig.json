@@ -32,7 +32,6 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "pretty": true,
-    "sourceMap": true,
     "allowJs": false,
     "strictNullChecks": false,
     "strictBindCallApply": false,
