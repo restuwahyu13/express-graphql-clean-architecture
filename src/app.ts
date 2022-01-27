@@ -103,7 +103,7 @@ class App {
           data: error.originalError['data'],
           path: error.path,
           locations: error.locations,
-          time_thrown: error.extensions['exception']['time_thrown'],
+          timestamp: error.extensions['exception']['time_thrown'],
           request: error.source['body']
         })
       }
