@@ -4,25 +4,24 @@ import 'express-http-error'
 import { GraphQLError } from 'graphql'
 import { NonEmptyArray, buildSchema } from 'type-graphql'
 import { ApolloServer, ExpressContext } from 'apollo-server-express'
+import { GraphQLRequestContext, GraphQLResponse } from 'apollo-server-core'
 import { graphqlUploadExpress as graphqlUpload } from 'graphql-upload'
 import { bodyParserGraphQL as graphqlBodyParser } from 'body-parser-graphql'
 import { applyMiddleware } from 'graphql-middleware'
-import { isInstance as isApolloErrorInstance, formatError as formatApolloError, ErrorInfo } from 'apollo-errors'
+import { isInstance as isApolloErrorInstance, formatError as formatApolloError } from 'apollo-errors'
 import reusify from 'reusify'
-import express, { Express } from 'express'
+import express, { Express, Request } from 'express'
 import http, { Server } from 'http'
 import Knex, { Knex as KnexDB } from 'knex'
 import hpp from 'hpp'
 import Objection from 'objection'
 import cors from 'cors'
 import helmet from 'helmet'
-import morgan from 'morgan'
 import compression from 'compression'
 import zlib from 'zlib'
 import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
 import path from 'path'
-import status from 'http-status'
 
 import * as knexfile from '@/knexfile'
 import { Winston } from '@libs/lib.winston'
@@ -94,17 +93,21 @@ class App {
         assumeValidSDL: true,
         experimentalFragmentVariables: true
       },
+      formatResponse(response: GraphQLResponse, requestContext?: GraphQLRequestContext): any {
+        if (process.env.NODE_ENV !== 'production' && !response.errors) {
+          Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
+        }
+      },
       formatError: (error: GraphQLError): any => {
         if (process.env.NODE_ENV !== 'production' && isApolloErrorInstance(error.originalError)) {
-          Winston.logger(error.name, error.originalError['data'])
+          Winston.loggerError(error.name, error.originalError['data'])
         }
         return formatApolloError({
           name: error.name,
           data: error.originalError['data'],
-          path: error.path,
-          locations: error.locations,
-          timestamp: error.extensions['exception']['time_thrown'],
-          request: error.source['body']
+          timestamp: error.extensions['exception']['time_thrown']
+          // path: error.path,
+          // locations: error.locations,
         })
       }
     })
@@ -128,7 +131,7 @@ class App {
 }
 
 /**
- * @description intialize app and run app development / production
+ * @description intialize app and run app with env development / staging / production
  */
 ;(async function () {
   await new App().main()
