@@ -5,9 +5,7 @@ import { DTOStudentCreate, DTOStudentById, DTOStudentUpdate } from '@dto/dto.stu
 import { DAOStudent } from '@dao/dao.student'
 import { gqlResponse } from '@helpers/helper.gqlResponse'
 
-export class ServiceStudent implements DAOStudent {
-  constructor(private model: ModelStudent) {}
-
+export class ServiceStudent extends ModelStudent implements DAOStudent {
   async createStudentService(payload: DTOStudentCreate): Promise<any> {
     try {
       return Promise.resolve(gqlResponse(status.OK, 'Create new Student for mitra or customer success'))

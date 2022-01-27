@@ -1,13 +1,38 @@
+import { ObjectType, Field, Int, InterfaceType } from 'type-graphql'
+import { GraphQLJSONObject } from 'graphql-scalars'
 import { assert } from 'is-any-type'
 
-export interface IGraphqlResponse {
+@InterfaceType()
+class IGraphqlResponse {
+  @Field((type) => Int, { nullable: false })
   stat_code: number
+
+  @Field((type) => String, { nullable: false })
   stat_msg: string
-  data?: any
+
+  @Field((type) => GraphQLJSONObject, { nullable: false })
+  data?: Record<string, any> | Record<string, any>[]
+
+  @Field((type) => GraphQLJSONObject, { nullable: false })
   pagination?: Record<string, any>
 }
 
-export const gqlResponse = (code: number, message: string, data?: any, pagination?: Record<string, any>): IGraphqlResponse => {
+@ObjectType({ implements: IGraphqlResponse })
+export class GraphqlResponse {
+  @Field((type) => Int, { nullable: false })
+  stat_code: number
+
+  @Field((type) => String, { nullable: false })
+  stat_msg: string
+
+  @Field((type) => GraphQLJSONObject, { nullable: false })
+  data?: Record<string, any> | Record<string, any>[]
+
+  @Field((type) => GraphQLJSONObject, { nullable: false })
+  pagination?: Record<string, any>
+}
+
+export const gqlResponse = (code: number, message: string, data?: any, pagination?: Record<string, any>): GraphqlResponse => {
   if (assert.isNull(data as any)) {
     return {
       stat_code: code,

@@ -50,7 +50,7 @@ class App {
     this.app.use(graphqlUpload({ maxFileSize: 3000000 }))
     this.app.use(
       cors({
-        methods: 'POST',
+        methods: ['POST', 'GET', 'PUT', 'PATCH'],
         allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
         credentials: true
       })

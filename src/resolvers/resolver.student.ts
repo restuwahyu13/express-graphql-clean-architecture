@@ -2,7 +2,7 @@ import { Query, Resolver } from 'type-graphql'
 import status from 'http-status'
 
 import { ServiceStudent } from '@services/service.student'
-import { ResponseStudent } from '@typedefs/type.student'
+import { GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 @Resolver()
 export class ResolverStudent extends ServiceStudent {
@@ -10,11 +10,14 @@ export class ResolverStudent extends ServiceStudent {
    * @description QUERY RESOLVER TERITORY
    */
 
-  @Query((returns) => ResponseStudent)
-  async student(): Promise<ResponseStudent> {
-    const gqlResponse: ResponseStudent = {
+  @Query((returns) => GraphqlResponse)
+  async student(): Promise<GraphqlResponse> {
+    const gqlResponse: GraphqlResponse = {
       stat_code: status.OK,
-      stat_msg: 'Hello Wordl Student'
+      stat_msg: 'Hello Wordl Student',
+      data: {
+        result: [{ name: 'john doe' }]
+      }
     }
     return gqlResponse
   }

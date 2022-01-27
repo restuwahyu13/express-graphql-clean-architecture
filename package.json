@@ -35,6 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "@graphql-tools/schema": "^8.3.1",
+    "apollo-errors": "^1.9.0",
     "apollo-server-express": "^3.5.0",
     "body-parser-graphql": "^1.1.0",
     "class-validator": "^0.13.2",

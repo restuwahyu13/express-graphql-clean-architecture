@@ -1,20 +1,22 @@
 import { Query, Resolver } from 'type-graphql'
 import status from 'http-status'
 
-import { DAOControllerTeacher } from '@dao/dao.teacher'
-import { ResponseTeacher } from '@typedefs/type.teacher'
+import { GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 @Resolver()
-export class ResolverTeacher implements DAOControllerTeacher {
+export class ResolverTeacher {
   /**
    * @description QUERY RESOLVER TERITORY
    */
 
-  @Query((returns) => ResponseTeacher)
-  async teacher(): Promise<ResponseTeacher> {
-    const gqlResponse: ResponseTeacher = {
+  @Query((returns) => GraphqlResponse)
+  async teacher(): Promise<GraphqlResponse> {
+    const gqlResponse: GraphqlResponse = {
       stat_code: status.OK,
-      stat_msg: 'Hello Wordl Student'
+      stat_msg: 'Hello Wordl Teacher',
+      data: {
+        result: { name: 'john doe' }
+      }
     }
     return gqlResponse
   }
