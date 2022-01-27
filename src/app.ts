@@ -19,9 +19,10 @@ import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
 import zlib from 'zlib'
+import path from 'path'
 import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
-import path from 'path'
+import gracefulShutdown from 'http-graceful-shutdown'
 
 import * as knexfile from '@/knexfile'
 import { Winston } from '@libs/lib.winston'
@@ -118,9 +119,18 @@ class App {
     const apollo: ApolloServer<ExpressContext> = await this.apolloServer()
     await apollo.start()
     apollo.applyMiddleware({ app: this.app })
-    this.server.listen(process.env.PORT, () => {
-      if (process.env.NODE_ENV !== 'production') console.info('Server is running on port: ', process.env.PORT)
-    })
+
+    if (process.env.NODE_ENV !== 'development') {
+      gracefulShutdown(this.server.listen(process.env.PORT), {
+        development: false,
+        forceExit: false,
+        timeout: 60000
+      })
+    } else {
+      this.server.listen(process.env.PORT, () => {
+        if (process.env.NODE_ENV !== 'production') console.info('Server running on port:', this.server.address()['port'])
+      })
+    }
   }
 
   public async main(): Promise<void> {
