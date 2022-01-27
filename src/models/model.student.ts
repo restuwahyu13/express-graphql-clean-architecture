@@ -2,7 +2,6 @@ import { Model, QueryBuilder, RelationMappings, RelationMappingsThunk } from 'ob
 
 import { IStudent } from '@interfaces/interface.student'
 import { ModelTeacher } from '@models/model.teacher'
-import { Bcrptjs } from '@/libs/lib.bcryptjs'
 
 export class ModelStudent extends Model implements IStudent {
   id!: number
@@ -10,7 +9,6 @@ export class ModelStudent extends Model implements IStudent {
   npm!: number
   fakultas!: string
   kejuruan!: string
-  password!: string
   created_at?: Date
   updated_at?: Date
 
@@ -33,10 +31,5 @@ export class ModelStudent extends Model implements IStudent {
         }
       }
     }
-  }
-
-  async $beforeInsert(): Promise<void> {
-    const password = await Bcrptjs.hashPassword(this.password)
-    this.password = password
   }
 }

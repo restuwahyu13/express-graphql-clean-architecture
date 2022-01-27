@@ -1,25 +1,33 @@
 import { InputType, Field } from 'type-graphql'
-import { GraphQLBigInt } from 'graphql-scalars'
 import { IsString, IsNotEmpty } from 'class-validator'
 
 @InputType()
-export class DTOStudent {
+export class DTOUserRegister {
   @Field((type) => String)
   @IsNotEmpty()
   @IsString()
-  name: string
-
-  @Field((type) => GraphQLBigInt)
-  @IsNotEmpty()
-  npm: number
+  email: string
 
   @Field((type) => String)
   @IsNotEmpty()
   @IsString()
-  fakultas: string
+  password: string
 
   @Field((type) => String)
   @IsNotEmpty()
   @IsString()
-  kejuruan: string
+  role: string
+}
+
+@InputType()
+export class DTOUserLogin {
+  @Field((type) => String)
+  @IsNotEmpty()
+  @IsString()
+  email: string
+
+  @Field((type) => String)
+  @IsNotEmpty()
+  @IsString()
+  password: string
 }
