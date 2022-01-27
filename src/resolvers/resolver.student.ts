@@ -1,7 +1,7 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 
 import { ServiceStudent } from '@services/service.student'
-import { DTOStudentById, DTOStudentCreate, DTOStudentUpdate } from '@dto/dto.student'
+import { DTOStudent } from '@dto/dto.student'
 import { GraphqlResponse, gqlResponse } from '@helpers/helper.gqlResponse'
 import { graphqlError } from '@helpers/helper.gqlError'
 
@@ -22,9 +22,9 @@ export class ResolverStudent extends ServiceStudent {
   }
 
   @Query((returns) => GraphqlResponse)
-  async resultStudentResolver(@Arg('input') args: DTOStudentById): Promise<GraphqlResponse> {
+  async resultStudentResolver(@Arg('id') params: number): Promise<GraphqlResponse> {
     try {
-      const res: GraphqlResponse = await super.resultStudentService(args)
+      const res: GraphqlResponse = await super.resultStudentService(params)
       return gqlResponse(res.stat_code, res.stat_msg, { result: res.data }, res.pagination)
     } catch (e: any) {
       return graphqlError(e.stat_code, e.stat_msg || e.message)
@@ -36,9 +36,9 @@ export class ResolverStudent extends ServiceStudent {
    */
 
   @Mutation((returns) => GraphqlResponse)
-  async createStudentResolver(@Arg('input') args: DTOStudentCreate): Promise<GraphqlResponse> {
+  async createStudentResolver(@Arg('input') payload: DTOStudent): Promise<GraphqlResponse> {
     try {
-      const res: GraphqlResponse = await super.createStudentService(args)
+      const res: GraphqlResponse = await super.createStudentService(payload)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
       return graphqlError(e.stat_code, e.stat_msg || e.message)
@@ -46,9 +46,9 @@ export class ResolverStudent extends ServiceStudent {
   }
 
   @Mutation((returns) => GraphqlResponse)
-  async deleteStudentResolver(@Arg('input') args: DTOStudentById): Promise<GraphqlResponse> {
+  async deleteStudentResolver(@Arg('id') params: number): Promise<GraphqlResponse> {
     try {
-      const res: GraphqlResponse = await super.deleteStudentService(args)
+      const res: GraphqlResponse = await super.deleteStudentService(params)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
       return graphqlError(e.stat_code, e.stat_msg || e.message)
@@ -56,9 +56,9 @@ export class ResolverStudent extends ServiceStudent {
   }
 
   @Mutation((returns) => GraphqlResponse)
-  async updateStudentResolver(@Arg('input') args: DTOStudentUpdate): Promise<GraphqlResponse> {
+  async updateStudentResolver(@Arg('id') params: number, @Arg('input') payload: DTOStudent): Promise<GraphqlResponse> {
     try {
-      const res: GraphqlResponse = await super.updateStudentService(args)
+      const res: GraphqlResponse = await super.updateStudentService(params, payload)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
       return graphqlError(e.stat_code, e.stat_msg || e.message)

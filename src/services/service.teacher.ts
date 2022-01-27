@@ -1,48 +1,78 @@
 import status from 'http-status'
 
 import { ModelTeacher } from '@models/model.teacher'
-import { DTOTeacherCreate, DTOTeacherById, DTOTeacherUpdate } from '@dto/dto.teacher'
+import { DTOTeacher } from '@dto/dto.teacher'
 import { DAOTeacher } from '@dao/dao.teacher'
 import { gqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
-  async createTeacherService(payload: DTOTeacherCreate): Promise<any> {
+  async createTeacherService(payload: DTOTeacher): Promise<any> {
     try {
-      return Promise.resolve(gqlResponse(status.OK, 'Create new Teacher for mitra or customer success'))
+      const checkDosenName: ModelTeacher = await super
+        .model()
+        .where('student_id', payload.student_id)
+        .andWhere('name', payload.name)
+        .first()
+      if (checkDosenName) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
+
+      const createNewTeacher: ModelTeacher = await super.model().insertAndFetch(payload).first()
+      if (!createNewTeacher) throw gqlResponse(status.BAD_REQUEST, 'Create new teacher failed')
+
+      return Promise.resolve(gqlResponse(status.OK, 'Create new teacher success'))
     } catch (e: any) {
-      return Promise.reject(gqlResponse(e.stat_code, e.stat_message || e.message))
+      return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }
   }
 
   async resultsTeacherService(): Promise<any> {
     try {
-      return Promise.resolve(gqlResponse(status.OK, 'Create new Teacher for mitra or customer success'))
+      const getAllTeachers: ModelTeacher[] = await super.model().select()
+
+      return Promise.resolve(gqlResponse(status.OK, 'Teacher Ok', getAllTeachers, {}))
     } catch (e: any) {
-      return Promise.reject(gqlResponse(e.stat_code, e.stat_message || e.message))
+      return Promise.reject(gqlResponse(status.INTERNAL_SERVER_ERROR, e.message))
     }
   }
 
-  async resultTeacherService(payload: DTOTeacherById): Promise<any> {
+  async resultTeacherService(params: number): Promise<any> {
     try {
-      return Promise.resolve(gqlResponse(status.OK, 'Create new Teacher for mitra or customer success'))
+      const getTeacher: ModelTeacher = await super.model().where('id', params).first()
+      if (!getTeacher) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
+
+      return Promise.resolve(gqlResponse(status.OK, 'Teacher Ok', getTeacher, {}))
     } catch (e: any) {
-      return Promise.reject(gqlResponse(e.stat_code, e.stat_message || e.message))
+      return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }
   }
 
-  async deleteTeacherService(payload: DTOTeacherById): Promise<any> {
+  async deleteTeacherService(params: number): Promise<any> {
     try {
-      return Promise.resolve(gqlResponse(status.OK, 'Create new Teacher for mitra or customer success'))
+      const checkTeacherId: ModelTeacher = await super.model().where('npm', params).first()
+      if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
+
+      const deleteTeacher: number = await super.model().where('id', params).delete()
+      if (!deleteTeacher) throw gqlResponse(status.BAD_REQUEST, 'Delete teacher failed')
+
+      return Promise.resolve(gqlResponse(status.OK, 'Delete teacher success'))
     } catch (e: any) {
-      return Promise.reject(gqlResponse(e.stat_code, e.stat_message || e.message))
+      return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }
   }
 
-  async updateTeacherService(payload: DTOTeacherUpdate): Promise<any> {
+  async updateTeacherService(params: number, payload: DTOTeacher): Promise<any> {
     try {
-      return Promise.resolve(gqlResponse(status.OK, 'Create new Teacher for mitra or customer success'))
+      const checkTeacherId: ModelTeacher = await super.model().where('id', params).first()
+      if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
+
+      const updateStudent: number = await super
+        .model()
+        .where('id', params)
+        .update({ name: payload.name, student_id: payload.student_id, field_of_study: payload.field_of_study })
+      if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update teacher failed')
+
+      return Promise.resolve(gqlResponse(status.OK, 'Update teacher success'))
     } catch (e: any) {
-      return Promise.reject(gqlResponse(e.stat_code, e.stat_message || e.message))
+      return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }
   }
 }

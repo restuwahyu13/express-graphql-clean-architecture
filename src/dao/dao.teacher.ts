@@ -1,9 +1,9 @@
-import { DTOTeacherCreate, DTOTeacherById, DTOTeacherUpdate } from '@dto/dto.teacher'
+import { DTOTeacher } from '@dto/dto.teacher'
 
 export interface DAOTeacher {
-  createTeacherService(payload: DTOTeacherCreate): Promise<any>
+  createTeacherService(payload: DTOTeacher): Promise<any>
   resultsTeacherService(): Promise<any>
-  resultTeacherService(payload: DTOTeacherById): Promise<any>
-  deleteTeacherService(payload: DTOTeacherById): Promise<any>
-  updateTeacherService(payload: DTOTeacherUpdate): Promise<any>
+  resultTeacherService(params: number): Promise<any>
+  deleteTeacherService(params: number): Promise<any>
+  updateTeacherService(params: number, payload: DTOTeacher): Promise<any>
 }

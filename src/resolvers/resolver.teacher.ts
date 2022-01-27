@@ -1,27 +1,67 @@
-import { Query, Resolver } from 'type-graphql'
-import status from 'http-status'
+import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 
-import { GraphqlResponse } from '@helpers/helper.gqlResponse'
+import { ServiceTeacher } from '@services/service.teacher'
+import { DTOTeacher } from '@dto/dto.teacher'
+import { GraphqlResponse, gqlResponse } from '@helpers/helper.gqlResponse'
+import { graphqlError } from '@helpers/helper.gqlError'
 
 @Resolver()
-export class ResolverTeacher {
+export class ResolverTeacher extends ServiceTeacher {
   /**
    * @description QUERY RESOLVER TERITORY
    */
 
   @Query((returns) => GraphqlResponse)
-  async teacher(): Promise<GraphqlResponse> {
-    const gqlResponse: GraphqlResponse = {
-      stat_code: status.OK,
-      stat_msg: 'Hello Wordl Teacher',
-      data: {
-        result: { name: 'john doe' }
-      }
+  async resultsTeacherResolver(): Promise<GraphqlResponse> {
+    try {
+      const res: GraphqlResponse = await super.resultsTeacherService()
+      return gqlResponse(res.stat_code, res.stat_msg, { results: res.data }, res.pagination)
+    } catch (e: any) {
+      return graphqlError(e.stat_code, e.stat_msg || e.message)
     }
-    return gqlResponse
+  }
+
+  @Query((returns) => GraphqlResponse)
+  async resultTeacherResolver(@Arg('id') params: number): Promise<GraphqlResponse> {
+    try {
+      const res: GraphqlResponse = await super.resultTeacherService(params)
+      return gqlResponse(res.stat_code, res.stat_msg, { result: res.data }, res.pagination)
+    } catch (e: any) {
+      return graphqlError(e.stat_code, e.stat_msg || e.message)
+    }
   }
 
   /**
    * @description MUTATION RESOLVER TERITORY
    */
+
+  @Mutation((returns) => GraphqlResponse)
+  async createTeacherResolver(@Arg('input') payload: DTOTeacher): Promise<GraphqlResponse> {
+    try {
+      const res: GraphqlResponse = await super.createTeacherService(payload)
+      return gqlResponse(res.stat_code, res.stat_msg)
+    } catch (e: any) {
+      return graphqlError(e.stat_code, e.stat_msg || e.message)
+    }
+  }
+
+  @Mutation((returns) => GraphqlResponse)
+  async deleteTeacherResolver(@Arg('id') params: number): Promise<GraphqlResponse> {
+    try {
+      const res: GraphqlResponse = await super.deleteTeacherService(params)
+      return gqlResponse(res.stat_code, res.stat_msg)
+    } catch (e: any) {
+      return graphqlError(e.stat_code, e.stat_msg || e.message)
+    }
+  }
+
+  @Mutation((returns) => GraphqlResponse)
+  async updateTeacherResolver(@Arg('id') params: number, @Arg('input') payload: DTOTeacher): Promise<GraphqlResponse> {
+    try {
+      const res: GraphqlResponse = await super.updateTeacherService(params, payload)
+      return gqlResponse(res.stat_code, res.stat_msg)
+    } catch (e: any) {
+      return graphqlError(e.stat_code, e.stat_msg || e.message)
+    }
+  }
 }

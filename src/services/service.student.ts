@@ -1,12 +1,12 @@
 import status from 'http-status'
 
 import { ModelStudent } from '@models/model.student'
-import { DTOStudentCreate, DTOStudentById, DTOStudentUpdate } from '@dto/dto.student'
+import { DTOStudent } from '@dto/dto.student'
 import { DAOStudent } from '@dao/dao.student'
 import { gqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceStudent extends ModelStudent implements DAOStudent {
-  async createStudentService(payload: DTOStudentCreate): Promise<any> {
+  async createStudentService(payload: DTOStudent): Promise<any> {
     try {
       const checStudentNpm: ModelStudent = await super.model().where('npm', payload.npm).orWhere('name', payload.name).first()
       if (checStudentNpm) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
@@ -30,10 +30,10 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async resultStudentService(payload: DTOStudentById): Promise<any> {
+  async resultStudentService(params: number): Promise<any> {
     try {
-      const getStudent: ModelStudent = await super.model().where('id', payload.id).first()
-      if (!getStudent) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${payload.id}, is not exist`)
+      const getStudent: ModelStudent = await super.model().where('id', params).first()
+      if (!getStudent) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
 
       return Promise.resolve(gqlResponse(status.OK, 'Student Ok', getStudent, {}))
     } catch (e: any) {
@@ -41,12 +41,12 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async deleteStudentService(payload: DTOStudentById): Promise<any> {
+  async deleteStudentService(params: number): Promise<any> {
     try {
-      const checkStudentId: ModelStudent = await super.model().where('npm', payload.id).first()
-      if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${payload.id}, is not exist`)
+      const checkStudentId: ModelStudent = await super.model().where('npm', params).first()
+      if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
 
-      const deleteStudent: number = await super.model().where('id', payload.id).delete()
+      const deleteStudent: number = await super.model().where('id', params).delete()
       if (!deleteStudent) throw gqlResponse(status.BAD_REQUEST, 'Delete student failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Delete student success'))
@@ -55,14 +55,14 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async updateStudentService(payload: DTOStudentUpdate): Promise<any> {
+  async updateStudentService(params: number, payload: DTOStudent): Promise<any> {
     try {
-      const checkStudentId: ModelStudent = await super.model().where('npm', payload.npm).first()
-      if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${payload.id}, is not exist`)
+      const checkStudentId: ModelStudent = await super.model().where('id', params).first()
+      if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
 
       const updateStudent: number = await super
         .model()
-        .where('id', payload.id)
+        .where('id', params)
         .update({ name: payload.name, npm: payload.npm, fakultas: payload.fakultas, kejuruan: payload.kejuruan })
       if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update student failed')
 

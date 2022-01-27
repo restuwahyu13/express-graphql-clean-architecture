@@ -1,9 +1,9 @@
-import { DTOStudentById, DTOStudentCreate, DTOStudentUpdate } from '@dto/dto.student'
+import { DTOStudent } from '@dto/dto.student'
 
 export interface DAOStudent {
-  createStudentService(payload: DTOStudentCreate): Promise<any>
+  createStudentService(payload: DTOStudent): Promise<any>
   resultsStudentService(): Promise<any>
-  resultStudentService(payload: DTOStudentById): Promise<any>
-  deleteStudentService(payload: DTOStudentById): Promise<any>
-  updateStudentService(payload: DTOStudentUpdate): Promise<any>
+  resultStudentService(params: number): Promise<any>
+  deleteStudentService(params: number): Promise<any>
+  updateStudentService(params: number, payload: DTOStudent): Promise<any>
 }
