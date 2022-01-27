@@ -1,5 +1,6 @@
-import { InputType, Field, Int, ID } from 'type-graphql'
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator'
+import { InputType, Field, Int } from 'type-graphql'
+import { GraphQLBigInt } from 'graphql-scalars'
+import { IsString, IsNotEmpty, IsNumber, IsInt } from 'class-validator'
 
 @InputType()
 export class DTOStudentCreate {
@@ -8,9 +9,8 @@ export class DTOStudentCreate {
   @IsString()
   name: string
 
-  @Field((type) => Int)
+  @Field((type) => GraphQLBigInt)
   @IsNotEmpty()
-  @IsNumber()
   npm: number
 
   @Field((type) => String)
@@ -31,27 +31,26 @@ export class DTOStudentCreate {
 
 @InputType()
 export class DTOStudentById {
-  @Field((type) => ID)
+  @Field((type) => Int)
   @IsNotEmpty()
-  @IsString()
-  id: string
+  @IsNumber()
+  id: number
 }
 
 @InputType()
 export class DTOStudentUpdate {
-  @Field((type) => ID)
+  @Field((type) => Int)
   @IsNotEmpty()
-  @IsString()
-  id: string
+  @IsNumber()
+  id: number
 
   @Field((type) => String)
   @IsNotEmpty()
   @IsString()
   name: string
 
-  @Field((type) => Int)
+  @Field((type) => GraphQLBigInt)
   @IsNotEmpty()
-  @IsNumber()
   npm: number
 
   @Field((type) => String)

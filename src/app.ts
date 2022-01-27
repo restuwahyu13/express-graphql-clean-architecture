@@ -1,11 +1,13 @@
 import 'reflect-metadata'
 import 'dotenv/config'
 import 'express-http-error'
+import { GraphQLError } from 'graphql'
 import { NonEmptyArray, buildSchema } from 'type-graphql'
 import { ApolloServer, ExpressContext } from 'apollo-server-express'
 import { graphqlUploadExpress as graphqlUpload } from 'graphql-upload'
 import { bodyParserGraphQL as graphqlBodyParser } from 'body-parser-graphql'
 import { applyMiddleware } from 'graphql-middleware'
+import { isInstance as isApolloErrorInstance, formatError as formatApolloError, ErrorInfo } from 'apollo-errors'
 import reusify from 'reusify'
 import express, { Express } from 'express'
 import http, { Server } from 'http'
@@ -20,8 +22,10 @@ import zlib from 'zlib'
 import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
 import path from 'path'
+import status from 'http-status'
 
 import * as knexfile from '@/knexfile'
+import { Winston } from '@libs/lib.winston'
 
 class App {
   private app: Express
@@ -50,7 +54,7 @@ class App {
     this.app.use(graphqlUpload({ maxFileSize: 3000000 }))
     this.app.use(
       cors({
-        methods: ['POST', 'GET', 'PUT', 'PATCH'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH'],
         allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
         credentials: true
       })
@@ -76,21 +80,26 @@ class App {
         delayAfter: 100 // slow down after request
       })
     )
-    if (process.env.NODE_ENV !== 'production') {
-      this.app.use(morgan('dev'))
-    }
   }
 
   private async apolloServer(): Promise<ApolloServer<ExpressContext>> {
     const resolversPath: NonEmptyArray<string> = [path.join(__dirname, 'resolvers/**/*.ts')]
     return new ApolloServer({
-      introspection: false,
       schema: applyMiddleware(await buildSchema({ resolvers: resolversPath, skipCheck: false })),
-      formatError: ({ name, message, path }) => ({
-        name,
-        message: message.replace('Unexpected error value: ', ''),
-        path
-      })
+      debug: process.env.NODE_ENV !== 'production' ? true : false,
+      introspection: true,
+      stopOnTerminationSignals: true,
+      parseOptions: {
+        allowLegacySDLImplementsInterfaces: true,
+        assumeValidSDL: true,
+        experimentalFragmentVariables: true
+      },
+      formatError: (error: GraphQLError): any => {
+        if (process.env.NODE_ENV !== 'production' && isApolloErrorInstance(error.originalError)) {
+          Winston.logger(error.name, error.originalError['data'])
+        }
+        return formatApolloError(error)
+      }
     })
   }
 
