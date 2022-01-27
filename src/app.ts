@@ -98,7 +98,14 @@ class App {
         if (process.env.NODE_ENV !== 'production' && isApolloErrorInstance(error.originalError)) {
           Winston.logger(error.name, error.originalError['data'])
         }
-        return formatApolloError(error)
+        return formatApolloError({
+          name: error.name,
+          data: error.originalError['data'],
+          path: error.path,
+          locations: error.locations,
+          time_thrown: error.extensions['exception']['time_thrown'],
+          request: error.source['body']
+        })
       }
     })
   }
