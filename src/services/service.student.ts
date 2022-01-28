@@ -6,12 +6,12 @@ import { DAOStudent } from '@dao/dao.student'
 import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceStudent extends ModelStudent implements DAOStudent {
-  async createStudentService(payload: DTOStudent): Promise<GraphqlResponse> {
+  async createStudentService(body: DTOStudent): Promise<GraphqlResponse> {
     try {
-      const checStudentNpm: ModelStudent = await super.model().where('npm', payload.npm).orWhere('name', payload.name).first()
+      const checStudentNpm: ModelStudent = await super.model().where('npm', body.npm).orWhere('name', body.name).first()
       if (checStudentNpm) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
 
-      const createNewStudent: ModelStudent = await super.model().insertAndFetch(payload).first()
+      const createNewStudent: ModelStudent = await super.model().insertAndFetch(body).first()
       if (!createNewStudent) throw gqlResponse(status.BAD_REQUEST, 'Create new student failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Create new student success'))
@@ -55,7 +55,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async updateStudentService(params: number, payload: DTOStudent): Promise<GraphqlResponse> {
+  async updateStudentService(params: number, body: DTOStudent): Promise<GraphqlResponse> {
     try {
       const checkStudentId: ModelStudent = await super.model().where('id', params).first()
       if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
@@ -63,7 +63,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
       const updateStudent: number = await super
         .model()
         .where('id', params)
-        .update({ name: payload.name, npm: payload.npm, fakultas: payload.fakultas, kejuruan: payload.kejuruan })
+        .update({ name: body.name, npm: body.npm, fakultas: body.fakultas, kejuruan: body.kejuruan })
       if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update student failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Update student success'))

@@ -1,4 +1,5 @@
 import status from 'http-status'
+import { assert } from 'is-any-type'
 
 import { ModelUser } from '@models/model.user'
 import { DTOUserRegister, DTOUserLogin } from '@dto/dto.user'
@@ -6,15 +7,14 @@ import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 import { DAOUsers } from '@dao/dao.user'
 import { Bcrptjs, IPassword } from '@libs/lib.bcryptjs'
 import { IToken, JsonWebToken } from '@libs/lib.jwt'
-import { assert } from 'is-any-type'
 
 export class ServiceUser extends ModelUser implements DAOUsers {
-  async registerUserService(payload: DTOUserRegister): Promise<GraphqlResponse> {
+  async registerUserService(body: DTOUserRegister): Promise<GraphqlResponse> {
     try {
-      const checkUserEmail: ModelUser = await super.model().where('email', payload.email).first()
+      const checkUserEmail: ModelUser = await super.model().where('email', body.email).first()
       if (checkUserEmail) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
 
-      const createNewUser: ModelUser = await super.model().insertAndFetch(payload).first()
+      const createNewUser: ModelUser = await super.model().insertAndFetch(body).first()
       if (!createNewUser) throw gqlResponse(status.BAD_REQUEST, 'Create new user failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Create new user success'))
@@ -23,12 +23,12 @@ export class ServiceUser extends ModelUser implements DAOUsers {
     }
   }
 
-  async loginUserService(payload: DTOUserLogin): Promise<GraphqlResponse> {
+  async loginUserService(body: DTOUserLogin): Promise<GraphqlResponse> {
     try {
-      const checkUserEmail: ModelUser = await super.model().where('email', payload.email).first()
+      const checkUserEmail: ModelUser = await super.model().where('email', body.email).first()
       if (!checkUserEmail) throw gqlResponse(status.BAD_REQUEST, 'Your are not never registered')
 
-      const comparePassword: IPassword = await Bcrptjs.comparePassword(payload.password, checkUserEmail.password)
+      const comparePassword: IPassword = await Bcrptjs.comparePassword(body.password, checkUserEmail.password)
       if (!comparePassword.success) throw gqlResponse(status.BAD_REQUEST, 'Password is not match')
 
       const tokenPayload: Record<string, any> = { id: checkUserEmail.id, role: checkUserEmail.role }

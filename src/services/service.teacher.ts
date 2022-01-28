@@ -6,16 +6,12 @@ import { DAOTeacher } from '@dao/dao.teacher'
 import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
-  async createTeacherService(payload: DTOTeacher): Promise<GraphqlResponse> {
+  async createTeacherService(body: DTOTeacher): Promise<GraphqlResponse> {
     try {
-      const checkDosenName: ModelTeacher = await super
-        .model()
-        .where('student_id', payload.student_id)
-        .andWhere('name', payload.name)
-        .first()
+      const checkDosenName: ModelTeacher = await super.model().where('student_id', body.student_id).andWhere('name', body.name).first()
       if (checkDosenName) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
 
-      const createNewTeacher: ModelTeacher = await super.model().insertAndFetch(payload).first()
+      const createNewTeacher: ModelTeacher = await super.model().insertAndFetch(body).first()
       if (!createNewTeacher) throw gqlResponse(status.BAD_REQUEST, 'Create new teacher failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Create new teacher success'))
@@ -59,7 +55,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     }
   }
 
-  async updateTeacherService(params: number, payload: DTOTeacher): Promise<GraphqlResponse> {
+  async updateTeacherService(params: number, body: DTOTeacher): Promise<GraphqlResponse> {
     try {
       const checkTeacherId: ModelTeacher = await super.model().where('id', params).first()
       if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
@@ -67,7 +63,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
       const updateStudent: number = await super
         .model()
         .where('id', params)
-        .update({ name: payload.name, student_id: payload.student_id, field_of_study: payload.field_of_study })
+        .update({ name: body.name, student_id: body.student_id, field_of_study: body.field_of_study })
       if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update teacher failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Update teacher success'))

@@ -23,18 +23,21 @@ import path from 'path'
 import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
 import gracefulShutdown from 'http-graceful-shutdown'
+import { assert } from 'is-any-type'
 
 import * as knexfile from '@/knexfile'
 import { Winston } from '@libs/lib.winston'
+import { permission } from '@middlewares/middleware.permission'
 
 class App {
   private app: Express
   private server: Server
   private knex: KnexDB
   private resolvers: NonEmptyArray<string>
-  private nodeEnv: boolean = process.env.NODE_ENV !== 'production' ? true : false
+  private nodeEnv: boolean
 
   constructor() {
+    this.nodeEnv = process.env.NODE_ENV !== 'production' ? true : false
     this.app = reusify(express).get() as Express
     this.server = http.createServer(this.app)
     this.knex = Knex(knexfile[process.env.NODE_ENV as string])
@@ -87,7 +90,22 @@ class App {
 
   private async apolloServer(): Promise<ApolloServer<ExpressContext>> {
     return new ApolloServer({
-      schema: applyMiddleware(await buildSchema({ resolvers: this.resolvers, skipCheck: false })),
+      schema: applyMiddleware(
+        await buildSchema({
+          resolvers: this.resolvers,
+          skipCheck: false,
+          authChecker: permission,
+          dateScalarMode: 'timestamp',
+          validate: {
+            enableDebugMessages: this.nodeEnv ? true : false,
+            strictGroups: true,
+            forbidUnknownValues: true,
+            skipMissingProperties: false,
+            skipNullProperties: false,
+            skipUndefinedProperties: false
+          }
+        })
+      ),
       debug: this.nodeEnv ? true : false,
       introspection: true,
       stopOnTerminationSignals: true,
@@ -97,12 +115,12 @@ class App {
         experimentalFragmentVariables: true
       },
       formatResponse(response: GraphQLResponse, requestContext?: GraphQLRequestContext): any {
-        if (this.nodeEnv && !response.errors) {
+        if (!response.errors && assert.isUndefined(this.nodeEnv as any)) {
           Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
         }
       },
       formatError: (error: GraphQLError): any => {
-        if (this.nodeEnv && isApolloErrorInstance(error.originalError)) {
+        if (isApolloErrorInstance(error.originalError) && assert.isUndefined(this.nodeEnv as any)) {
           Winston.loggerError(error.name, error.originalError['data'])
         }
         return formatApolloError({
