@@ -113,7 +113,7 @@ class App {
         experimentalFragmentVariables: true
       },
       formatResponse: (response: GraphQLResponse, requestContext?: GraphQLRequestContext): any => {
-        if (this.nodeEnv && !response.errors) {
+        if (this.nodeEnv && !isApolloErrorInstance(response.errors)) {
           Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
         }
       },
