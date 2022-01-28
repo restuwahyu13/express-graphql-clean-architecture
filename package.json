@@ -1,7 +1,7 @@
 {
-  "name": "express-type-graphql",
+  "name": "express-graphql-starterkit",
   "version": "0.0.1",
-  "description": "Express graphql boilerplate using type-graphql and apollo server",
+  "description": "Express graphql starterkit using type-graphql and apollo server",
   "main": "app.js",
   "files": [
     "dist/**/*"
