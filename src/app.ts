@@ -34,10 +34,9 @@ class App {
   private server: Server
   private knex: KnexDB
   private resolvers: NonEmptyArray<string>
-  private nodeEnv: boolean
+  private nodeEnv: boolean = process.env.NODE_ENV !== 'production' ? true : false
 
   constructor() {
-    this.nodeEnv = process.env.NODE_ENV !== 'production' ? true : false
     this.app = reusify(express).get() as Express
     this.server = http.createServer(this.app)
     this.knex = Knex(knexfile[process.env.NODE_ENV as string])
@@ -114,13 +113,13 @@ class App {
         assumeValidSDL: true,
         experimentalFragmentVariables: true
       },
-      formatResponse(response: GraphQLResponse, requestContext?: GraphQLRequestContext): any {
-        if (!response.errors && assert.isUndefined(this.nodeEnv as any)) {
+      formatResponse: (response: GraphQLResponse, requestContext?: GraphQLRequestContext): any => {
+        if (this.nodeEnv && !response.errors) {
           Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
         }
       },
       formatError: (error: GraphQLError): any => {
-        if (isApolloErrorInstance(error.originalError) && assert.isUndefined(this.nodeEnv as any)) {
+        if (this.nodeEnv && isApolloErrorInstance(error.originalError)) {
           Winston.loggerError(error.name, error.originalError['data'])
         }
         return formatApolloError({
