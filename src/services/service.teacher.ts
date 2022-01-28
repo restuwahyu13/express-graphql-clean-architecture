@@ -24,7 +24,12 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     try {
       const getAllTeachers: ModelTeacher[] = await super
         .model()
-        .select('teachers.name as teacher_name', 'teachers.field_of_study', 'class.room_name as teacher_class', 'students.name as student_name')
+        .select(
+          'teachers.name as teacher_name',
+          'teachers.field_of_study as teacher_study',
+          'class.room_name as teacher_class',
+          'students.name as student_name'
+        )
         .leftJoin('class', 'teachers.id', '=', 'class.teacher_id')
         .leftJoin('students', 'class.student_id', '=', 'students.id')
         .limit(query.limit)
