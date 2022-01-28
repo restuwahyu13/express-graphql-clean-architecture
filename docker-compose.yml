@@ -16,7 +16,6 @@ services:
     env_file: .env
     depends_on:
       - pg
-      - redis
     volumes:
       - ./:/usr/share/app
       - /usr/share/app/node_modules
