@@ -22,7 +22,7 @@ services:
     networks:
       - node_networks
   ###########################
-  # POSTGRES SERVICES
+  # DATABASE SERVICES
   ###########################
   database:
     image: postgres:14-alpine
