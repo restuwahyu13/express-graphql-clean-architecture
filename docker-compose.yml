@@ -15,7 +15,7 @@ services:
       - 3000:3000
     env_file: .env
     depends_on:
-      - pg
+      - database
     volumes:
       - ./:/usr/share/app
       - /usr/share/app/node_modules
@@ -24,7 +24,7 @@ services:
   ###########################
   # POSTGRES SERVICES
   ###########################
-  pg:
+  database:
     image: postgres:14-alpine
     restart: always
     healthcheck:
@@ -40,14 +40,14 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - pg-data:/var/lib/postgres/data
+      - database-data:/var/lib/postgres/data
     networks:
       - node_networks
   ###########################
   # VOLUME PERSISTENT DATA
   ###########################
 volumes:
-  pg-data:
+  database-data:
   ###########################
   # NETWORK SHARING GROUP
   ###########################
