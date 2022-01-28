@@ -1,14 +1,14 @@
 import status from 'http-status'
 
 import { ModelTeacher } from '@models/model.teacher'
-import { DTOTeacher } from '@dto/dto.teacher'
+import { DTOTeacher, DTOTeacherPagination } from '@dto/dto.teacher'
 import { DAOTeacher } from '@dao/dao.teacher'
 import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
   async createTeacherService(body: DTOTeacher): Promise<GraphqlResponse> {
     try {
-      const checkDosenName: ModelTeacher = await super.model().where('student_id', body.student_id).andWhere('name', body.name).first()
+      const checkDosenName: ModelTeacher = await super.model().where('name', body.name).first()
       if (checkDosenName) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
 
       const createNewTeacher: ModelTeacher = await super.model().insertAndFetch(body).first()
@@ -20,11 +20,17 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
     }
   }
 
-  async resultsTeacherService(): Promise<GraphqlResponse> {
+  async resultsTeacherService(query: DTOTeacherPagination): Promise<GraphqlResponse> {
     try {
-      const getAllTeachers: ModelTeacher[] = await super.model().select()
+      const getAllTeachers: ModelTeacher[] = await super
+        .model()
+        .select('teachers.name as teacher_name', 'teachers.field_of_study', 'class.room_name as teacher_class', 'students.name as student_name')
+        .leftJoin('class', 'teachers.id', '=', 'class.teacher_id')
+        .leftJoin('students', 'class.student_id', '=', 'students.id')
+        .limit(query.limit)
+        .offset(query.offset)
 
-      return Promise.resolve(gqlResponse(status.OK, 'Teacher Ok', getAllTeachers, {}))
+      return Promise.resolve(gqlResponse(status.OK, 'Teacher Ok', getAllTeachers))
     } catch (e: any) {
       return Promise.reject(gqlResponse(status.INTERNAL_SERVER_ERROR, e.message))
     }
@@ -35,7 +41,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
       const getTeacher: ModelTeacher = await super.model().where('id', params).first()
       if (!getTeacher) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
 
-      return Promise.resolve(gqlResponse(status.OK, 'Teacher Ok', getTeacher, {}))
+      return Promise.resolve(gqlResponse(status.OK, 'Teacher Ok', getTeacher))
     } catch (e: any) {
       return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }
@@ -60,10 +66,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
       const checkTeacherId: ModelTeacher = await super.model().where('id', params).first()
       if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
 
-      const updateStudent: number = await super
-        .model()
-        .where('id', params)
-        .update({ name: body.name, student_id: body.student_id, field_of_study: body.field_of_study })
+      const updateStudent: number = await super.model().where('id', params).update({ name: body.name, field_of_study: body.field_of_study })
       if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update teacher failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Update teacher success'))

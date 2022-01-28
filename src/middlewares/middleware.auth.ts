@@ -8,7 +8,7 @@ import { gqlResponse } from '@helpers/helper.gqlResponse'
 import { JsonWebToken } from '@libs/lib.jwt'
 import { ModelUser } from '@models/model.user'
 import { ExpressContext } from 'apollo-server-express'
-import { graphqlError } from '@helpers/helper.gqlError'
+import { gqlError } from '@helpers/helper.gqlError'
 
 export class Auth implements MiddlewareInterface {
   async use({ context }: ResolverData, next: NextFn): Promise<any> {
@@ -37,7 +37,7 @@ export class Auth implements MiddlewareInterface {
       // goto to next step
       await next()
     } catch (e: any) {
-      throw graphqlError(e.start_code || status.UNAUTHORIZED, e.stat_msg || e.message)
+      throw gqlError(e.start_code || status.UNAUTHORIZED, e.stat_msg || e.message)
     }
   }
 }

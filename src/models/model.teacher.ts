@@ -1,11 +1,10 @@
 import { Model, QueryBuilder, RelationMappings, RelationMappingsThunk } from 'objection'
 
 import { ITeacher } from '@interfaces/interface.teacher'
-import { ModelStudent } from '@models/model.student'
+import { ModelClassRoom } from '@models/model.classRoom'
 
 export class ModelTeacher extends Model implements ITeacher {
   id!: number
-  student_id!: number
   name!: string
   field_of_study!: string
   created_at?: Date
@@ -23,10 +22,10 @@ export class ModelTeacher extends Model implements ITeacher {
     return {
       students: {
         relation: Model.ManyToManyRelation,
-        modelClass: ModelStudent,
+        modelClass: ModelClassRoom,
         join: {
-          from: `${this.tableName}.student_id`,
-          to: `${ModelStudent}.id`
+          from: `${this.tableName}.id`,
+          to: `${ModelClassRoom}.teacher_id`
         }
       }
     }

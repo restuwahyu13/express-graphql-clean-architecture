@@ -1,31 +1,26 @@
 import { InputType, Field, Int } from 'type-graphql'
-import { GraphQLBigInt } from 'graphql-scalars'
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator'
 
 @InputType()
-export class DTOStudent {
-  @Field((type) => String, { nullable: false })
+export class DTOClassRoom {
+  @Field((type) => Int, { nullable: false })
   @IsNotEmpty()
-  @IsString()
-  name: string
+  @IsNumber()
+  student_id: number
 
-  @Field((type) => GraphQLBigInt, { nullable: false })
+  @Field((type) => Int, { nullable: false })
   @IsNotEmpty()
-  npm: number
-
-  @Field((type) => String, { nullable: false })
-  @IsNotEmpty()
-  @IsString()
-  fakultas: string
+  @IsNumber()
+  teacher_id: number
 
   @Field((type) => String, { nullable: false })
   @IsNotEmpty()
   @IsString()
-  kejuruan: string
+  room_name: string
 }
 
 @InputType()
-export class DTOStudentPagination {
+export class DTOClassRoomPagination {
   @Field((type) => Int, { nullable: false })
   @IsNotEmpty()
   @IsNumber()

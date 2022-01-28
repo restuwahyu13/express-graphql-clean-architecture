@@ -23,7 +23,6 @@ import path from 'path'
 import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
 import gracefulShutdown from 'http-graceful-shutdown'
-import { assert } from 'is-any-type'
 
 import * as knexfile from '@/knexfile'
 import { Winston } from '@libs/lib.winston'

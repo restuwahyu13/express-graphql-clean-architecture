@@ -1,14 +1,14 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { ExpressContext as Context } from 'apollo-server-express'
 
-import { ServiceStudent } from '@services/service.student'
-import { DTOStudent, DTOStudentPagination as DTOPagination } from '@dto/dto.student'
+import { ServiceClassRoom } from '@services/service.classRoom'
+import { DTOClassRoom, DTOClassRoomPagination as DTOPagination } from '@dto/dto.classRoom'
 import { GraphqlResponse as Response, gqlResponse } from '@helpers/helper.gqlResponse'
 import { gqlError } from '@helpers/helper.gqlError'
 import { Auth } from '@middlewares/middleware.auth'
 
 @Resolver()
-export class ResolverStudent extends ServiceStudent {
+export class ResolverClassRoom extends ServiceClassRoom {
   /**
    * @description QUERY RESOLVER TERITORY
    */
@@ -16,9 +16,9 @@ export class ResolverStudent extends ServiceStudent {
   @Query((returns) => Response)
   @UseMiddleware(Auth)
   @Authorized(['admin'])
-  async resultsStudentResolver(@Arg('input') query: DTOPagination, @Ctx() ctx: Context): Promise<Response> {
+  async resultsClassRoomResolver(@Arg('input') query: DTOPagination, @Ctx() ctx: Context): Promise<Response> {
     try {
-      const res: Response = await super.resultsStudentService(query)
+      const res: Response = await super.resultsClassRoomService(query)
       return gqlResponse(res.stat_code, res.stat_msg, { results: res.data })
     } catch (e: any) {
       return gqlError(e.stat_code, e.stat_msg || e.message)
@@ -27,10 +27,10 @@ export class ResolverStudent extends ServiceStudent {
 
   @Query((returns) => Response)
   @UseMiddleware(Auth)
-  @Authorized(['admin', 'student'])
-  async resultStudentResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
+  @Authorized(['admin'])
+  async resultClassRoomResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
     try {
-      const res: Response = await super.resultStudentService(params)
+      const res: Response = await super.resultClassRoomService(params)
       return gqlResponse(res.stat_code, res.stat_msg, { result: res.data })
     } catch (e: any) {
       return gqlError(e.stat_code, e.stat_msg || e.message)
@@ -44,9 +44,9 @@ export class ResolverStudent extends ServiceStudent {
   @Mutation((returns) => Response)
   @UseMiddleware(Auth)
   @Authorized(['admin'])
-  async createStudentResolver(@Arg('input') body: DTOStudent, @Ctx() ctx: Context): Promise<Response> {
+  async createClassRoomResolver(@Arg('input') body: DTOClassRoom, @Ctx() ctx: Context): Promise<Response> {
     try {
-      const res: Response = await super.createStudentService(body)
+      const res: Response = await super.createClassRoomService(body)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
       return gqlError(e.stat_code, e.stat_msg || e.message)
@@ -56,9 +56,9 @@ export class ResolverStudent extends ServiceStudent {
   @Mutation((returns) => Response)
   @UseMiddleware(Auth)
   @Authorized(['admin'])
-  async deleteStudentResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
+  async deleteClassRoomResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
     try {
-      const res: Response = await super.deleteStudentService(params)
+      const res: Response = await super.deleteClassRoomService(params)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
       return gqlError(e.stat_code, e.stat_msg || e.message)
@@ -68,9 +68,9 @@ export class ResolverStudent extends ServiceStudent {
   @Mutation((returns) => Response)
   @UseMiddleware(Auth)
   @Authorized(['admin'])
-  async updateStudentResolver(@Arg('id') params: number, @Arg('input') body: DTOStudent, @Ctx() ctx: Context): Promise<Response> {
+  async updateClassRoomResolver(@Arg('id') params: number, @Arg('input') body: DTOClassRoom, @Ctx() ctx: Context): Promise<Response> {
     try {
-      const res: Response = await super.updateStudentService(params, body)
+      const res: Response = await super.updateClassRoomService(params, body)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
       return gqlError(e.stat_code, e.stat_msg || e.message)

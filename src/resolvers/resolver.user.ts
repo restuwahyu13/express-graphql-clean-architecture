@@ -3,7 +3,7 @@ import { Arg, Mutation, Resolver } from 'type-graphql'
 import { ServiceUser } from '@services/service.user'
 import { DTOUserRegister, DTOUserLogin } from '@dto/dto.user'
 import { GraphqlResponse as Response, gqlResponse } from '@helpers/helper.gqlResponse'
-import { graphqlError } from '@helpers/helper.gqlError'
+import { gqlError } from '@helpers/helper.gqlError'
 
 @Resolver()
 export class ResolverUser extends ServiceUser {
@@ -17,7 +17,7 @@ export class ResolverUser extends ServiceUser {
       const res: Response = await super.registerUserService(body)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 
@@ -25,9 +25,9 @@ export class ResolverUser extends ServiceUser {
   async loginUserResolver(@Arg('input') payload: DTOUserLogin): Promise<Response> {
     try {
       const res: Response = await super.loginUserService(payload)
-      return gqlResponse(res.stat_code, res.stat_msg, res.data, {})
+      return gqlResponse(res.stat_code, res.stat_msg, res.data)
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 }

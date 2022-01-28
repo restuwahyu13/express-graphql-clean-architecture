@@ -2,9 +2,9 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver, UseMiddleware } from '
 import { ExpressContext as Context } from 'apollo-server-express'
 
 import { ServiceTeacher } from '@services/service.teacher'
-import { DTOTeacher } from '@dto/dto.teacher'
+import { DTOTeacher, DTOTeacherPagination as DTOPagination } from '@dto/dto.teacher'
 import { GraphqlResponse as Response, gqlResponse } from '@helpers/helper.gqlResponse'
-import { graphqlError } from '@helpers/helper.gqlError'
+import { gqlError } from '@helpers/helper.gqlError'
 import { Auth } from '@middlewares/middleware.auth'
 
 @Resolver()
@@ -16,12 +16,12 @@ export class ResolverTeacher extends ServiceTeacher {
   @Query((returns) => Response)
   @UseMiddleware(Auth)
   @Authorized(['admin', 'teacher'])
-  async resultsTeacherResolver(@Ctx() ctx: Context): Promise<Response> {
+  async resultsTeacherResolver(@Arg('input') query: DTOPagination, @Ctx() ctx: Context): Promise<Response> {
     try {
-      const res: Response = await super.resultsTeacherService()
-      return gqlResponse(res.stat_code, res.stat_msg, { results: res.data }, res.pagination)
+      const res: Response = await super.resultsTeacherService(query)
+      return gqlResponse(res.stat_code, res.stat_msg, { results: res.data })
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 
@@ -31,9 +31,9 @@ export class ResolverTeacher extends ServiceTeacher {
   async resultTeacherResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
     try {
       const res: Response = await super.resultTeacherService(params)
-      return gqlResponse(res.stat_code, res.stat_msg, { result: res.data }, res.pagination)
+      return gqlResponse(res.stat_code, res.stat_msg, { result: res.data })
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 
@@ -49,7 +49,7 @@ export class ResolverTeacher extends ServiceTeacher {
       const res: Response = await super.createTeacherService(body)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 
@@ -61,7 +61,7 @@ export class ResolverTeacher extends ServiceTeacher {
       const res: Response = await super.deleteTeacherService(params)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 
@@ -73,7 +73,7 @@ export class ResolverTeacher extends ServiceTeacher {
       const res: Response = await super.updateTeacherService(params, body)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
-      return graphqlError(e.stat_code, e.stat_msg || e.message)
+      return gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 }

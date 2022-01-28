@@ -35,7 +35,7 @@ export class ServiceUser extends ModelUser implements DAOUsers {
       const generateToken: IToken | string | Promise<Error> = JsonWebToken.sign(tokenPayload, { expiredAt: 1, type: 'days' })
       if (assert.isPromise(generateToken as any)) throw gqlResponse(status.BAD_REQUEST, 'Generate activation token failed')
 
-      return Promise.resolve(gqlResponse(status.OK, 'Login success', generateToken, {}))
+      return Promise.resolve(gqlResponse(status.OK, 'Login success', generateToken))
     } catch (e: any) {
       return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }

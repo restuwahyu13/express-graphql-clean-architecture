@@ -1,15 +1,15 @@
 import status from 'http-status'
 
 import { ModelStudent } from '@models/model.student'
-import { DTOStudent } from '@dto/dto.student'
+import { DTOStudent, DTOStudentPagination } from '@dto/dto.student'
 import { DAOStudent } from '@dao/dao.student'
 import { gqlResponse, GraphqlResponse } from '@helpers/helper.gqlResponse'
 
 export class ServiceStudent extends ModelStudent implements DAOStudent {
   async createStudentService(body: DTOStudent): Promise<GraphqlResponse> {
     try {
-      const checStudentNpm: ModelStudent = await super.model().where('npm', body.npm).orWhere('name', body.name).first()
-      if (checStudentNpm) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
+      const checkStudentNpm: ModelStudent = await super.model().where('npm', body.npm).orWhere('name', body.name).first()
+      if (checkStudentNpm) throw gqlResponse(status.BAD_REQUEST, 'Your are already registered')
 
       const createNewStudent: ModelStudent = await super.model().insertAndFetch(body).first()
       if (!createNewStudent) throw gqlResponse(status.BAD_REQUEST, 'Create new student failed')
@@ -20,11 +20,26 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
     }
   }
 
-  async resultsStudentService(): Promise<GraphqlResponse> {
+  async resultsStudentService(query: DTOStudentPagination): Promise<GraphqlResponse> {
     try {
-      const getAllStudents: ModelStudent[] = await super.model().select()
+      const getAllStudents: ModelStudent[] = await super
+        .model()
+        .select(
+          'students.id',
+          'students.name',
+          'students.npm',
+          'students.fakultas',
+          'students.kejuruan',
+          'class.room_name as student_class',
+          'teachers.name as teacher_name',
+          'teachers.field_of_study as teacher_study'
+        )
+        .leftJoin('class', 'students.id', '=', 'class.student_id')
+        .leftJoin('teachers', 'teachers.id', '=', 'class.teacher_id')
+        .limit(query.limit)
+        .offset(query.offset)
 
-      return Promise.resolve(gqlResponse(status.OK, 'Student Ok', getAllStudents, {}))
+      return Promise.resolve(gqlResponse(status.OK, 'Student Ok', getAllStudents))
     } catch (e: any) {
       return Promise.reject(gqlResponse(status.INTERNAL_SERVER_ERROR, e.message))
     }
@@ -35,7 +50,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
       const getStudent: ModelStudent = await super.model().where('id', params).first()
       if (!getStudent) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
 
-      return Promise.resolve(gqlResponse(status.OK, 'Student Ok', getStudent, {}))
+      return Promise.resolve(gqlResponse(status.OK, 'Student Ok', getStudent))
     } catch (e: any) {
       return Promise.reject(gqlResponse(e.stat_code || status.INTERNAL_SERVER_ERROR, e.stat_msg || e.message))
     }

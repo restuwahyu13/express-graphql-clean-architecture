@@ -4,10 +4,10 @@ import { JwtPayload } from 'jsonwebtoken'
 import { ResolverData } from 'type-graphql'
 import status from 'http-status'
 
-import { graphqlError } from '@/helpers/helper.gqlError'
-import { JsonWebToken } from '@/libs/lib.jwt'
-import { ModelUser } from '@/models/model.user'
-import { gqlResponse } from '@/helpers/helper.gqlResponse'
+import { ModelUser } from '@models/model.user'
+import { gqlError } from '@helpers/helper.gqlError'
+import { JsonWebToken } from '@libs/lib.jwt'
+import { gqlResponse } from '@helpers/helper.gqlResponse'
 
 export async function permission({ context }: ResolverData, roles: string[]): Promise<any> {
   try {
@@ -20,6 +20,6 @@ export async function permission({ context }: ResolverData, roles: string[]): Pr
     if (roles.includes(checkUserRole.role)) return true
     else throw gqlResponse(status.FORBIDDEN, 'Role permission access denied')
   } catch (e: any) {
-    throw graphqlError(e.stat_code || status.FORBIDDEN, e.stat_msg || e.message)
+    throw gqlError(e.stat_code || status.FORBIDDEN, e.stat_msg || e.message)
   }
 }

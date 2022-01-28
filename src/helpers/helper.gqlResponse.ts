@@ -12,9 +12,6 @@ class IGraphqlResponse {
 
   @Field((type) => GraphQLJSONObject, { nullable: false })
   data?: Record<string, any> | Record<string, any>[]
-
-  @Field((type) => GraphQLJSONObject, { nullable: false })
-  pagination?: Record<string, any>
 }
 
 @ObjectType({ implements: IGraphqlResponse })
@@ -27,12 +24,9 @@ export class GraphqlResponse {
 
   @Field((type) => GraphQLJSONObject, { nullable: false })
   data?: Record<string, any> | Record<string, any>[]
-
-  @Field((type) => GraphQLJSONObject, { nullable: false })
-  pagination?: Record<string, any>
 }
 
-export const gqlResponse = (code: number, message: string, data?: any, pagination?: Record<string, any>): GraphqlResponse => {
+export const gqlResponse = (code: number, message: string, data?: any): GraphqlResponse => {
   if (assert.isNull(data as any)) {
     return {
       stat_code: code,
@@ -42,8 +36,7 @@ export const gqlResponse = (code: number, message: string, data?: any, paginatio
     return {
       stat_code: code,
       stat_msg: message,
-      data: data,
-      pagination: pagination
+      data: data
     }
   }
 }
