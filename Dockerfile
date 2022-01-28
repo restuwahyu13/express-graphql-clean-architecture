@@ -13,8 +13,7 @@ RUN npm i npm -g \
 FROM build
 WORKDIR /usr/share/app
 COPY --from=build . /usr/share/app
-RUN  npm i swagger-ui-watcher -g \
-  && npm i pm2 -g \
+RUN npm i pm2 -g \
   npm run build
 EXPOSE 3000
 CMD npm run start:pm2:docker
