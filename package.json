@@ -9,12 +9,14 @@
   "scripts": {
     "cleanup": "rimraf dist",
     "build": "npm run cleanup && tsc && tsc-alias",
+    "start:pm2": "pm2 start dist/configs/pm2.config.js",
+    "start:pm2:docker": "pm2-runtime dist/configs/pm2.config.js",
     "start": "node dist/app.js",
     "dev": "tsnd --poll --respawn --watch src/**/*.{ts} -r tsconfig-paths/register src/app.ts",
-    "kmig": "npx knex --cwd src --knexfile knexfile.ts migrate:latest",
-    "kroll": "npx knex --cwd src --knexfile knexfile.ts migrate:rollback",
-    "klist": "npx knex --cwd src --knexfile knexfile.ts migrate:list",
-    "krun": "npx knex --cwd src --knexfile knexfile.ts seed:run"
+    "kmig": "npx knex --cwd src/configs --knexfile knexfile.ts migrate:latest",
+    "kroll": "npx knex --cwd src/configs --knexfile knexfile.ts migrate:rollback",
+    "klist": "npx knex --cwd src/configs --knexfile knexfile.ts migrate:list",
+    "krun": "npx knex --cwd src/configs --knexfile knexfile.ts seed:run"
   },
   "author": {
     "name": "restu wahyu saputra",

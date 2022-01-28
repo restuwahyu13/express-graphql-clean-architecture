@@ -24,7 +24,7 @@ import rateLimit from 'express-rate-limit'
 import SlowDown from 'express-slow-down'
 import gracefulShutdown from 'http-graceful-shutdown'
 
-import * as knexfile from '@/knexfile'
+import * as knexfile from '@configs/knexfile'
 import { Winston } from '@libs/lib.winston'
 import { permission } from '@middlewares/middleware.permission'
 

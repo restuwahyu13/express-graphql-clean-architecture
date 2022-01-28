@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  ###########################
+  # APPLICATION SERVICES
+  ###########################
+  app:
+    build: .
+    restart: always
+    healthcheck:
+      start_period: 60ms
+      timeout: 120s
+      interval: 30s
+      test: ifconfig | grep broadcast
+    ports:
+      - 3000:3000
+    env_file: .env
+    depends_on:
+      - pg
+      - redis
+    volumes:
+      - ./:/usr/share/app
+      - /usr/share/app/node_modules
+    networks:
+      - node_networks
+  ###########################
+  # POSTGRES SERVICES
+  ###########################
+  pg:
+    image: postgres:14-alpine
+    restart: always
+    healthcheck:
+      start_period: 60ms
+      timeout: 120s
+      interval: 30s
+      test: ifconfig | grep broadcast
+    ports:
+      - 5432:5432
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - pg-data:/var/lib/postgres/data
+    networks:
+      - node_networks
+  ###########################
+  # VOLUME PERSISTENT DATA
+  ###########################
+volumes:
+  pg-data:
+  ###########################
+  # NETWORK SHARING GROUP
+  ###########################
+networks:
+  node_networks:

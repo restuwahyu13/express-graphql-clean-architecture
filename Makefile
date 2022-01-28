@@ -62,21 +62,21 @@ KNEX := knex
 
 kmakem:
 ifdef name
-	${NPX} ${KNEX} --cwd src --knexfile knexfile migrate:make ${name}
+	${NPX} ${KNEX} --cwd src/configs --knexfile knexfile migrate:make ${name}
 endif
 
 kmakes:
 ifdef name
-	${NPX} ${KNEX} --cwd src --knexfile knexfile seed:make ${name}
+	${NPX} ${KNEX} --cwd src/configs --knexfile knexfile seed:make ${name}
 endif
 
 kmig:
 ifdef type
-	${NPX} ${KNEX} --cwd src --knexfile knexfile migrate:${type}
+	${NPX} ${KNEX} --cwd src/configs --knexfile knexfile migrate:${type}
 endif
 
 krun:
-	${NPX} ${KNEX} --cwd src --knexfile knexfile seed:run
+	${NPX} ${KNEX} --cwd src/configs --knexfile knexfile seed:run
 
 klist:
-	${NPX} ${KNEX} --cwd src --knexfile knexfile migrate:list
+	${NPX} ${KNEX} --cwd src/configs --knexfile knexfile migrate:list
