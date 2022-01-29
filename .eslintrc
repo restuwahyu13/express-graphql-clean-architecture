@@ -1,0 +1,26 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["optimize-regex"],
+  "extends": [
+    "standard",
+    "plugin:eslint-plugin/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:security/recommended",
+    "plugin:eslint-comments/recommended"
+  ],
+  "rules": {
+    "no-console": 1,
+    "no-unneeded-ternary": 0,
+    "space-before-function-paren": 0,
+    "dot-notation": 0,
+    "@typescript-eslint/no-extra-semi": 0,
+    "indent": 0
+  }
+}
