@@ -14,7 +14,7 @@ export class Auth implements MiddlewareInterface {
   async use({ context }: ResolverData, next: NextFn): Promise<any> {
     try {
       const IncomingRequest: ExpressContext = context as ExpressContext
-      let headers: IncomingHttpHeaders = IncomingRequest.req.headers
+      const headers: IncomingHttpHeaders = IncomingRequest.req.headers
 
       if (!Object.keys(headers).includes('authorization')) throw gqlResponse(status.UNAUTHORIZED, 'Authorization is required')
 
