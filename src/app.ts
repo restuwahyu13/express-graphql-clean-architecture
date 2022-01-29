@@ -112,22 +112,18 @@ class App {
         assumeValidSDL: true,
         experimentalFragmentVariables: true
       },
-      formatResponse: (response: GraphQLResponse, requestContext?: GraphQLRequestContext): any => {
-        if (this.nodeEnv && !isApolloErrorInstance(response.errors)) {
-          Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
-        }
-      },
       formatError: (error: GraphQLError): any => {
         if (this.nodeEnv && isApolloErrorInstance(error.originalError)) {
           Winston.loggerError(error.name, error.originalError['data'])
+          return formatApolloError({
+            name: error.name,
+            data: error.originalError['data'],
+            timestamp: error.extensions['exception']['time_thrown']
+          })
         }
-        return formatApolloError({
-          name: error.name,
-          data: error.originalError['data'],
-          timestamp: error.extensions['exception']['time_thrown']
-          // path: error.path,
-          // locations: error.locations,
-        })
+      },
+      formatResponse: (response: GraphQLResponse, requestContext?: GraphQLRequestContext): any => {
+        if (!response.errors) Winston.loggerSuccess('GraphQLSuccess', response.data[Object.keys(response.data)[0]])
       },
       context: (req: Context): Config<Request> => req
     })

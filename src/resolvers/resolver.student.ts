@@ -61,7 +61,7 @@ export class ResolverStudent extends ServiceStudent {
       const res: Response = await super.deleteStudentService(params)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
-      return gqlError(e.stat_code, e.stat_msg || e.message)
+      throw gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 
@@ -73,7 +73,7 @@ export class ResolverStudent extends ServiceStudent {
       const res: Response = await super.updateStudentService(params, body)
       return gqlResponse(res.stat_code, res.stat_msg)
     } catch (e: any) {
-      return gqlError(e.stat_code, e.stat_msg || e.message)
+      throw gqlError(e.stat_code, e.stat_msg || e.message)
     }
   }
 }

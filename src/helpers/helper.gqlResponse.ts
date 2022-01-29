@@ -27,7 +27,7 @@ export class GraphqlResponse {
 }
 
 export const gqlResponse = (code: number, message: string, data?: any): GraphqlResponse => {
-  if (assert.isNull(data as any)) {
+  if (assert.isUndefined(data) || assert.isNull(data)) {
     return {
       stat_code: code,
       stat_msg: message

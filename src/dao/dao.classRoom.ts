@@ -1,10 +1,10 @@
 import { DTOClassRoom, DTOClassRoomPagination } from '@dto/dto.classRoom'
-import { GraphqlResponse } from '@helpers/helper.gqlResponse'
+import { GraphqlResponse as Response } from '@helpers/helper.gqlResponse'
 
 export interface DAOClassRoom {
-  createClassRoomService(body: DTOClassRoom): Promise<GraphqlResponse>
-  resultsClassRoomService(query: DTOClassRoomPagination): Promise<GraphqlResponse>
-  resultClassRoomService(params: number): Promise<GraphqlResponse>
-  deleteClassRoomService(params: number): Promise<GraphqlResponse>
-  updateClassRoomService(params: number, body: DTOClassRoom): Promise<GraphqlResponse>
+  createClassRoomService(body: DTOClassRoom): Promise<Response>
+  resultsClassRoomService(query: DTOClassRoomPagination): Promise<Response>
+  resultClassRoomService(params: number): Promise<Response>
+  deleteClassRoomService(params: number): Promise<Response>
+  updateClassRoomService(params: number, body: DTOClassRoom): Promise<Response>
 }
