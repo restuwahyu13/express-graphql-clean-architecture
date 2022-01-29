@@ -13,7 +13,7 @@ export class ResolverStudent extends ServiceStudent {
    * @description QUERY RESOLVER TERITORY
    */
 
-  @Query((returns) => Response)
+  @Query((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async resultsStudentResolver(@Arg('input') query: DTOPagination, @Ctx() ctx: Context): Promise<Response> {
@@ -25,7 +25,7 @@ export class ResolverStudent extends ServiceStudent {
     }
   }
 
-  @Query((returns) => Response)
+  @Query((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin', 'student'])
   async resultStudentResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
@@ -41,7 +41,7 @@ export class ResolverStudent extends ServiceStudent {
    * @description MUTATION RESOLVER TERITORY
    */
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async createStudentResolver(@Arg('input') body: DTOStudent, @Ctx() ctx: Context): Promise<Response> {
@@ -53,7 +53,7 @@ export class ResolverStudent extends ServiceStudent {
     }
   }
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async deleteStudentResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
@@ -65,7 +65,7 @@ export class ResolverStudent extends ServiceStudent {
     }
   }
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async updateStudentResolver(@Arg('id') params: number, @Arg('input') body: DTOStudent, @Ctx() ctx: Context): Promise<Response> {

@@ -13,7 +13,7 @@ export class ResolverClassRoom extends ServiceClassRoom {
    * @description QUERY RESOLVER TERITORY
    */
 
-  @Query((returns) => Response)
+  @Query((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async resultsClassRoomResolver(@Arg('input') query: DTOPagination, @Ctx() ctx: Context): Promise<Response> {
@@ -25,7 +25,7 @@ export class ResolverClassRoom extends ServiceClassRoom {
     }
   }
 
-  @Query((returns) => Response)
+  @Query((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async resultClassRoomResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
@@ -41,7 +41,7 @@ export class ResolverClassRoom extends ServiceClassRoom {
    * @description MUTATION RESOLVER TERITORY
    */
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async createClassRoomResolver(@Arg('input') body: DTOClassRoom, @Ctx() ctx: Context): Promise<Response> {
@@ -53,7 +53,7 @@ export class ResolverClassRoom extends ServiceClassRoom {
     }
   }
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async deleteClassRoomResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
@@ -65,7 +65,7 @@ export class ResolverClassRoom extends ServiceClassRoom {
     }
   }
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
   @Authorized(['admin'])
   async updateClassRoomResolver(@Arg('id') params: number, @Arg('input') body: DTOClassRoom, @Ctx() ctx: Context): Promise<Response> {

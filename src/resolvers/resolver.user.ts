@@ -11,7 +11,7 @@ export class ResolverUser extends ServiceUser {
    * @description MUTATION RESOLVER TERITORY
    */
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   async registerUserResolver(@Arg('input') body: DTOUserRegister): Promise<Response> {
     try {
       const res: Response = await super.registerUserService(body)
@@ -21,7 +21,7 @@ export class ResolverUser extends ServiceUser {
     }
   }
 
-  @Mutation((returns) => Response)
+  @Mutation((returns) => Response, { nullable: false })
   async loginUserResolver(@Arg('input') payload: DTOUserLogin): Promise<Response> {
     try {
       const res: Response = await super.loginUserService(payload)
