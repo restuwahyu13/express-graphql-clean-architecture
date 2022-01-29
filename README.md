@@ -20,6 +20,7 @@ The following is a folder pattern for express graphql starterkit structure patte
    + [Resolvers](#resolvers)
    + [Typedefs](#typedefs)
    + [Services](#services)
+   + [Crons](#crons)
 - [Command](#command)
    + [Application Lifecycle ](#application-lifecycle)
    + [Docker Lifecycle](#docker-lifecycle)
