@@ -1,37 +1,38 @@
 # Express Graphql Clean Architecture
 
-The following is a folder pattern for express graphql starterkit structure pattern that I usually use, so if you are interested in the pattern I made, you can use it if you think it's good.
+The following is a folder pattern for express graphql starterkit structure pattern that I usually use, so if you are interested in the pattern I made,
+you can use it if you think it's good.
 
 ## Table Of Content
 
 - [What Are The Benefits](#what-are-the-benefits-)
 - [Folder Structure Pattern](#folder-structure-pattern)
 - [Folder Status And Description](#folder-status-and-description)
-   + [Test](#tests)
-   + [Configs](#configs)
-   + [Dao](#dao)
-   + [Databases](#databases)
-   + [Dto](#dto)
-   + [Helpers](#helpers)
-   + [Interfaces](#interface)
-   + [Libs](#libs)
-   + [Middlewares](#middlewares)
-   + [Models](#models)
-   + [Resolvers](#resolvers)
-   + [Typedefs](#typedefs)
-   + [Services](#services) 
+  - [Test](#tests)
+  - [Configs](#configs)
+  - [Dao](#dao)
+  - [Databases](#databases)
+  - [Dto](#dto)
+  - [Helpers](#helpers)
+  - [Interfaces](#interface)
+  - [Libs](#libs)
+  - [Middlewares](#middlewares)
+  - [Models](#models)
+  - [Resolvers](#resolvers)
+  - [Typedefs](#typedefs)
+  - [Services](#services)
 - [Command](#command)
-   + [Application Lifecycle ](#application-lifecycle)
-   + [Docker Lifecycle](#docker-lifecycle)
+  - [Application Lifecycle ](#application-lifecycle)
+  - [Docker Lifecycle](#docker-lifecycle)
 
 ## What Are The Benefits ?
 
-- [ ] Easy to maintance 
-- [ ] Easy to scalable
-- [ ] Readable code
-- [ ] Suitable for large projects or small projects
-- [ ] Easy to understand for junior or senior
-- [ ] And more
+- [x] Easy to maintance
+- [x] Easy to scalable
+- [x] Readable code
+- [x] Suitable for large projects or small projects
+- [x] Easy to understand for junior or senior
+- [x] And more
 
 ## Folder Structure Pattern
 
@@ -70,81 +71,87 @@ The following is a folder pattern for express graphql starterkit structure patte
 ## Folder Status And Description
 
 - #### Tests
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                         |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Tests*         | *Optional*        | *A collection of functions used to create a series of tests or run a test, be it unit testing or integration testing, which will later be used for the application itself.* | 
+
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                             |
+  | --------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Tests_         | _Optional_        | _A collection of functions used to create a series of tests or run a test, be it unit testing or integration testing, which will later be used for the application itself._ |
 
 - #### Configs
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                            |
-| --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Configs*       | *Optional*        | *A collection of functions that contains all the configurations related to the application needs, such as .env or serverless.yml, which will later be used for the application itself.* | 
 
-- #### Dao   
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                   |
-| --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Dao*        | *Optional*        | *A collection of functions used to define a name for a service so that resolvers can access it.* | 
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                         |
+  | --------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Configs_       | _Optional_        | _A collection of functions that contains all the configurations related to the application needs, such as .env or serverless.yml, which will later be used for the application itself._ |
+
+- #### Dao
+
+  | **Folder Name** | **Folder Status** | **Description**                                                                                  |
+  | --------------- | ----------------- | ------------------------------------------------------------------------------------------------ |
+  | _Dao_           | _Optional_        | _A collection of functions used to define a name for a service so that resolvers can access it._ |
 
 - #### Dto
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                                                                                                   |
-| --------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Dto*      | *Required*        | *A collection of functions used to handle all requests body passed from the client.* | 
+
+  | **Folder Name** | **Folder Status** | **Description**                                                                      |
+  | --------------- | ----------------- | ------------------------------------------------------------------------------------ |
+  | _Dto_           | _Required_        | _A collection of functions used to handle all requests body passed from the client._ |
 
 - #### Helpers
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                            |
-| --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Helpers*       | *Optional*        | *A collection of functions used to create utilities for application purposes, such as customError or customResponse, which will later be used for the application itself.* | 
+
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                            |
+  | --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Helpers_       | _Optional_        | _A collection of functions used to create utilities for application purposes, such as customError or customResponse, which will later be used for the application itself._ |
 
 - #### Interfaces
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                                                                                                   |
-| --------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Interfaces*      | *Required*        | *A collection of functions used to definition field property for model.* |
 
+  | **Folder Name** | **Folder Status** | **Description**                                                          |
+  | --------------- | ----------------- | ------------------------------------------------------------------------ |
+  | _Interfaces_    | _Required_        | _A collection of functions used to definition field property for model._ |
 
 - #### Libs
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                 |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Libs*           | *Required*        | *A collection of functions that are used for the purpose of customizing a library into a separate function, which will later be used for the application itself.* |
 
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                   |
+  | --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Libs_          | _Required_        | _A collection of functions that are used for the purpose of customizing a library into a separate function, which will later be used for the application itself._ |
 
 - #### Middlewares
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                                                                                                 |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Middlewares*   | *Required*        | *A collection of functions that are used as a service for HTTP Requests such as authJWt, authRole, customLogger whether used per-route or used globally without the need to use them in each route, which will later be used for the application itself.* |                                                                                                                                                          |
 
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                                                                           |
+  | --------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+  | _Middlewares_   | _Required_        | _A collection of functions that are used as a service for HTTP Requests such as authJWt, authRole, customLogger whether used per-route or used globally without the need to use them in each route, which will later be used for the application itself._ |     |
 
 - #### Crons
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                         |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Crons*         | *Optional*        | *A collection of functions that are used to trigger a desired function, according to the time specified by the user, which will later be used for the application itself.* | 
 
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                            |
+  | --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Crons_         | _Optional_        | _A collection of functions that are used to trigger a desired function, according to the time specified by the user, which will later be used for the application itself._ |
 
 - #### Databases
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                       |
-| --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Databases*     | *required*        | *A collection of functions used to create migrations or seeds for the database, which will later be used for the application itself.* | 
 
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                       |
+  | --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Databases_     | _required_        | _A collection of functions used to create migrations or seeds for the database, which will later be used for the application itself._ |
 
+- #### Models
 
-- #### Models 
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                           |
-| --------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Models*        | *Required*        | *A collection of functions used to represent the table structure in a database, which will later be used for the application itself.* | 
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                       |
+  | --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Models_        | _Required_        | _A collection of functions used to represent the table structure in a database, which will later be used for the application itself._ |
 
 - #### Resolvers
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                  |
-| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Resolvers*      | *Required*        | *A collection of functions that are used to forward requests given by handlers to services, which will later be used for the application itself.* | 
+
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                   |
+  | --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Resolvers_     | _Required_        | _A collection of functions that are used to forward requests given by handlers to services, which will later be used for the application itself._ |
 
 - #### Typedefs
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                  |
-| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Typedefs*      | *Optional*        | *A collection of functions used to pass the response you provide to the client from the service, which will later be used for the application itself, but if you are not use custom response.* | 
+
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                                                                                                |
+  | --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | _Typedefs_      | _Optional_        | _A collection of functions used to pass the response you provide to the client from the service, which will later be used for the application itself, but if you are not use custom response._ |
 
 - #### Services
-| **Folder Name** | **Folder Status** | **Description**                                                                                                                                                  |
-| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Services*      | *Required*        | *A collection of functions that are used to interact with the database, which will later be used for the application itself.* | 
-
+  | **Folder Name** | **Folder Status** | **Description**                                                                                                               |
+  | --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+  | _Services_      | _Required_        | _A collection of functions that are used to interact with the database, which will later be used for the application itself._ |
 
 ## Command
 
