@@ -75,10 +75,7 @@ export class ServiceStudent extends ModelStudent implements DAOStudent {
       const checkStudentId: ModelStudent = await super.model().where('id', params).first()
       if (!checkStudentId) throw gqlResponse(status.BAD_REQUEST, `StudentID for this id ${params}, is not exist`)
 
-      const updateStudent: number = await super
-        .model()
-        .where('id', params)
-        .update({ name: body.name, npm: body.npm, fakultas: body.fakultas, kejuruan: body.kejuruan })
+      const updateStudent: number = await super.model().where('id', params).update(body)
       if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update student failed')
 
       return Promise.resolve(gqlResponse(status.OK, 'Update student success'))

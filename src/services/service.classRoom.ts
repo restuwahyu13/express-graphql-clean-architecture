@@ -63,10 +63,7 @@ export class ServiceClassRoom extends ModelClassRoom implements DAOClassRoom {
       const checkClassRoomId: ModelClassRoom = await super.model().where('id', params).first()
       if (!checkClassRoomId) throw gqlResponse(status.BAD_REQUEST, `ClassRoomID for this id ${params}, is not exist`)
 
-      const updateClassRoom: number = await super
-        .model()
-        .where('id', params)
-        .update({ room_name: body.room_name, student_id: body.student_id, teacher_id: body.teacher_id })
+      const updateClassRoom: number = await super.model().where('id', params).update(body)
       if (!updateClassRoom) throw gqlResponse(status.BAD_REQUEST, 'Update Class Room failed')
 
       return gqlResponse(status.OK, 'Update Class Room success')

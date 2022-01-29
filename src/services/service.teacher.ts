@@ -71,7 +71,7 @@ export class ServiceTeacher extends ModelTeacher implements DAOTeacher {
       const checkTeacherId: ModelTeacher = await super.model().where('id', params).first()
       if (!checkTeacherId) throw gqlResponse(status.BAD_REQUEST, `TeacherID for this id ${params}, is not exist`)
 
-      const updateStudent: number = await super.model().where('id', params).update({ name: body.name, field_of_study: body.field_of_study })
+      const updateStudent: number = await super.model().where('id', params).update(body)
       if (!updateStudent) throw gqlResponse(status.BAD_REQUEST, 'Update teacher failed')
 
       return gqlResponse(status.OK, 'Update teacher success')
