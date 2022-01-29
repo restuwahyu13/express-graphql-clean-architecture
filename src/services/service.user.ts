@@ -1,5 +1,4 @@
 import status from 'http-status'
-import { assert } from 'is-any-type'
 
 import { ModelUser } from '@models/model.user'
 import { DTOUserRegister, DTOUserLogin } from '@dto/dto.user'
@@ -32,8 +31,8 @@ export class ServiceUser extends ModelUser implements DAOUsers {
       if (!comparePassword.success) throw gqlResponse(status.BAD_REQUEST, 'Password is not match')
 
       const tokenPayload: Record<string, any> = { id: checkUserEmail.id, role: checkUserEmail.role }
-      const generateToken: IToken | string | Promise<Error> = JsonWebToken.sign(tokenPayload, { expiredAt: 1, type: 'days' })
-      if (assert.isPromise(generateToken as any)) throw gqlResponse(status.BAD_REQUEST, 'Generate activation token failed')
+      const generateToken: IToken | string = JsonWebToken.sign(tokenPayload, { expiredAt: 1, type: 'days' })
+      if (!generateToken) throw gqlResponse(status.BAD_REQUEST, 'Generate activation token failed')
 
       return gqlResponse(status.OK, 'Login success', generateToken)
     } catch (e: any) {
