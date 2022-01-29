@@ -15,7 +15,7 @@ export class ResolverTeacher extends ServiceTeacher {
 
   @Query((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
-  @Authorized(['admin', 'teacher'])
+  @Authorized(['admin'])
   async resultsTeacherResolver(@Arg('input') query: DTOPagination, @Ctx() ctx: Context): Promise<Response> {
     try {
       const res: Response = await super.resultsTeacherService(query)
@@ -27,7 +27,7 @@ export class ResolverTeacher extends ServiceTeacher {
 
   @Query((returns) => Response, { nullable: false })
   @UseMiddleware(Auth)
-  @Authorized(['admin'])
+  @Authorized(['admin', 'teacher'])
   async resultTeacherResolver(@Arg('id') params: number, @Ctx() ctx: Context): Promise<Response> {
     try {
       const res: Response = await super.resultTeacherService(params)

@@ -22,7 +22,7 @@ export class ModelStudent extends Model implements IStudent {
 
   static get relationMappings(): RelationMappings | RelationMappingsThunk {
     return {
-      teachers: {
+      classRoom: {
         relation: Model.ManyToManyRelation,
         modelClass: ModelClassRoom,
         join: {
