@@ -60,7 +60,7 @@ The following is a folder pattern for express graphql starterkit structure patte
 └── libs
 │   └── lib.jwt.ts
 └── configs
-│   └── pm2.conifg.js
+│   └── pm2.config.js
 └── databases
 │   └── migrations
 │   │     └── user_20210913.go // generate auto by cli using third party library
