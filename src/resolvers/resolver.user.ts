@@ -22,9 +22,9 @@ export class ResolverUser extends ServiceUser {
   }
 
   @Mutation((returns) => Response, { nullable: false })
-  async loginUserResolver(@Arg('input') payload: DTOUserLogin): Promise<Response> {
+  async loginUserResolver(@Arg('input') body: DTOUserLogin): Promise<Response> {
     try {
-      const res: Response = await super.loginUserService(payload)
+      const res: Response = await super.loginUserService(body)
       return gqlResponse(res.stat_code, res.stat_msg, res.data)
     } catch (e: any) {
       return gqlError(e.stat_code, e.stat_msg || e.message)
